@@ -2,7 +2,7 @@
 
 ## Grasshopper – begehbares Raumschiff (Death in Space Deckplan)
 
-Die **Grasshopper** aus *Death in Space* (Vorlage: `Grasshopper-PrinterFriendly-A3.pdf`) als komplettes,
+Die **Grasshopper** aus *Death in Space* (Vorlagen: Deckplan `Grasshopper-PrinterFriendly-A3.pdf` und das Abenteuer „Search and Salvage“) als komplettes,
 begehbares Raumschiff für TaleSpire: 1 Planquadrat = 1 TaleSpire-Einheit, 53 × 36 Felder Innenraum, dazu Hülle,
 Dach, Aufbauten und Triebwerke. Alles ist in Ebenen aufgeteilt, sodass man mit TaleSpires Höhen-Clipping
 (Hide Volumes / Clipping-Ebene für GM und Spieler) durch Dach und Decke in die Räume schneiden kann.
@@ -12,43 +12,50 @@ Dach, Aufbauten und Triebwerke. Alles ist in Ebenen aufgeteilt, sodass man mit T
 *Blau = Innenraum, grau = Hülle, rot = Wände, grün = Türen, lila = Luken, gelb = Diagonalzellen, orange = Aufbauten
 auf dem Dach und Umriss des zweiten Hüllenstockwerks, Kreise = Props, grüne Kästchen = Wand-Details.*
 
-### Was gebaut ist
+### Räume nach dem Abenteuer „Search and Salvage“
 
-- **Innenraum (y = 0):** 30 Räume nach Plan – Brücke mit Bug-Pilotenstation, gebogenen Konsolenbänken und
-  Holo-Tisch, zwei Luftschleusen mit Außenluken, runder Beobachtungsraum mit Sechskanttisch und Fensterwänden,
-  Maschinenraum, Lager, Wandschrank-Gang, Korridore mit Schotttüren, Messe mit Konferenztisch, Kombüse,
-  Krankenecke, vier Kojen-Nischen und zwei Bädern, Steuerbord-Halle mit Kryo-Kapseln, Liftplattform,
-  Reaktorraum mit Rohren, Frachtraum voller Kisten, Hydroponik, Hangar mit Bodenluftschleuse, Generatorraum,
-  Rettungskapsel-Bucht mit vier Kapseln und Luken.
-- **Böden nach Raumtyp:** Korridore mit Panelboden und leuchtenden Streifen, Fracht/Hangar/Lager mit
-  Industrieboden, Maschinenräume mit Gummiboden, Reaktor und Schleusen mit Metallplatten.
-- **Details (in die Wände geclippt):** Lichtleisten an allen Korridorwänden, Säulen an jeder Wandecke,
-  Bildschirme, Sicherheitsmonitore, Kameras, Warnschilder an den Schleusen und Kapselluken, Wandlampen,
-  Kabelstränge unter der Decke, Waffenständer.
-- **Decke (y = 2.0):** Schiffsdecke über allen Räumen.
-- **Hülle (y = 0 bis 2.25):** ein Zellring aus Hüllenwänden rund um das Deck, der auch die Hohlräume zwischen den
-  Räumen schließt, Diagonalstücke an allen Chamfern, Hüllenplatten als Dach über dem ganzen Schiff.
-- **Dachaufbauten (y = 2.25):** Lüfter, Rohrleitungen entlang der Korridore, Klimageräte, Luftauslässe,
-  Stützträger, Antenne, Solarpaneele.
-- **Zweites Hüllenstockwerk (y = 2.25 bis 4.25):** Aufbau über dem Messe-Block mit eigener Plattierung, Antenne
-  und Solarpaneelen.
-- **Antrieb:** drei Triebwerke mit Sockeln am Heck (Osten), Haupttriebwerk oben, acht Manövrierdüsen an Bug,
-  Schleusen und Hangar.
+| Nr. | Abenteuer | Umsetzung im Slab |
+|---|---|---|
+| 0 | Airlock | Hangar-Trichter mit Bodenluftschleuse, Boltgun-Falle (Gewehr auf Stativ) an der Frachtraumtür |
+| 1 | Small Cargo Bay | Frachtraum mit Gummiboden, Kisten, Containern, Glasscherben, Vorraum zum Hauptkorridor |
+| 2 | Engine Room | Großer Maschinenraum mit totem Triebwerk, vier EMP-Speeren darin, Kerzen, Müll; Reaktornische mit Rohren |
+| 3 | Cryopod Room | Steuerbord-Halle mit vier Kryokapseln, Dutzende Kerzen, Trümmer |
+| 4 | Medical Bay | Krankenstation mit OP-Tisch, Trümmern, **aufgerissener Hülle** (Einstiegspunkt, kein Dach, kein Deckenstück), Leiche im EVA-Anzug davor; Plastik-Quarantäneschleuse zum Kryoraum |
+| – | Ventilation Tunnel | **Neu, nicht auf dem Deckplan:** Kriechtunnel von der Krankenstation entlang der Oberseite bis zum Beobachtungsraum, Luken an beiden Enden, Computerpanel (AIKO) in der Mitte |
+| 5 | Crew Quarters | Messe mit Konferenztisch, Kombüse, vier Kojen-Nischen, Vorhänge, Bodenluke, zwei Bäder (Dusche), kaputter Automat |
+| 6 | Main Corridor | Zentral- und Steuerbordkorridor mit Metallgitterboden, Lichtleisten, Kameras, Schotttüren |
+| 7 | Maintenance Shaft | Verschlossener Raum am Südende des Korridors: Kabelstränge, Kanister, Tonnen, Kartons, Müll |
+| 8 | Empty Observation Room | Raum neben dem oberen Korridor, rundum Fensterwände, Müll und Trümmer, eigene Tür |
+| 9 | Tactical Stations | Runder Raum mit Sechskanttisch, Stühlen, Apsis-Konsole, **Glasdecke** und Solarpaneelen daneben auf dem Dach |
+| 10 | Computer Room | Weißer Raum mit schrägen Ecken, Bildschirme an den Wänden, Konsolenreihe, Hauptkonsole |
+| 11 | Commander Bridge | Brücke mit Bug-Pilotenstation, zwei Konsolenbänken, Holo-Tisch, Luftschleusen |
+| – | Rettungskapsel-Bucht | Eigener Raum hinter dem Steuerbordkorridor mit vier Kapseln, Luken vom Korridor und Diagonal-Luke vom Maschinenraum |
+
+### Aufbau
+
+- **Innenraum (y = 0):** Böden nach Raumtyp, Wände, Türen, Fenster, Möbel, Lichtleisten, Säulen, Schilder, Kameras.
+- **Decke (y = 2.0):** Schiffsdecke, über dem Taktikraum Glas, über der Krankenstation offen.
+- **Hülle (y = 0 bis 2.25):** Ein Zellring aus Hüllenwänden um alle Räume, an jeder Schräge 45°-Stücke statt Treppen;
+  Zwischenräume sind mit Hüllenblöcken massiv gefüllt, damit beim Clipping keine leeren „Geister-Räume“ erscheinen.
+  Dach aus Schiffsmetallplatten, am Riss der Krankenstation offen.
+- **Dachaufbauten (y = 2.25):** Lüfter, Rohrleitungen, Klimageräte, Luftauslässe, Träger, Antenne, Solarpaneele.
+- **Zweites Hüllenstockwerk (y = 2.25 bis 4.25):** Aufbau über dem Crew-Quartier mit Antenne und Solarpaneelen.
+- **Antrieb:** Drei Triebwerke mit Sockeln am Heck (Osten), Haupttriebwerk oben, zwei Bremsdüsen am Hangar.
 
 ### Dateien
 
 | Datei | Inhalt | Assets |
 |---|---|---|
-| `grasshopper/grasshopper_full.slab.txt` | **Alles in einem** | 3116 |
-| `grasshopper/grasshopper_A_interior.slab.txt` | Boden, Wände, Türen, Fenster, Props, Details, Lichter | 1211 |
-| `grasshopper/grasshopper_B_ceiling.slab.txt` | Decke (y = 2.0) | 699 |
-| `grasshopper/grasshopper_C_hull_roof_engines.slab.txt` | Hülle, Dachplatten, Aufbauten, 2. Stockwerk, Triebwerke | 1209 |
-| `grasshopper/grasshopper_layer_floor.slab.txt` | nur Boden | 381 |
-| `grasshopper/grasshopper_layer_walls_doors.slab.txt` | nur Wände, Türen, Fenster, Luken | 459 |
-| `grasshopper/grasshopper_layer_props.slab.txt` | nur Möbel | 121 |
-| `grasshopper/grasshopper_layer_details_lights.slab.txt` | nur Lichtleisten, Säulen, Schilder, Bildschirme | 253 |
+| `grasshopper/grasshopper_full.slab.txt` | **Alles in einem** | 3371 |
+| `grasshopper/grasshopper_A_interior.slab.txt` | Boden, Wände, Türen, Fenster, Props, Details, Lichter | 1374 |
+| `grasshopper/grasshopper_B_ceiling.slab.txt` | Decke (y = 2.0), Glasdecke Taktikraum | 736 |
+| `grasshopper/grasshopper_C_hull_roof_engines.slab.txt` | Hülle, Dachplatten, Aufbauten, 2. Stockwerk, Triebwerke | 1264 |
+| `grasshopper/grasshopper_layer_floor.slab.txt` | nur Boden | 459 |
+| `grasshopper/grasshopper_layer_walls_doors.slab.txt` | nur Wände, Türen, Fenster, Luken | 476 |
+| `grasshopper/grasshopper_layer_props.slab.txt` | nur Möbel | 159 |
+| `grasshopper/grasshopper_layer_details_lights.slab.txt` | nur Lichtleisten, Säulen, Schilder, Bildschirme | 283 |
 
-Der volle Slab ist rund 11 KB komprimiert, TaleSpire erlaubt 30 KB.
+Der volle Slab ist rund 13 KB komprimiert, TaleSpire erlaubt 30 KB.
 
 ### Einfügen in TaleSpire
 
@@ -185,6 +192,32 @@ Das Layout (Räume als Zellmengen, Diagonalwände, Türen, Fenster, Props, Dacha
 | `ksink` | kitchen_sink_001 | `fd365f56-dd8f-43ec-a700-c072af7d42ef` |
 | `surgery` | Surgery Bed v1 | `eda4fafa-71ef-4628-8f60-e4bdba9a51b1` |
 | `surglamp` | Surgery lamp | `349aed42-a69a-45f6-8d20-0a62381461ed` |
+| `candle` | Candle | `61c18e99-1d7d-4403-9cab-6fe9fdd8d261` |
+| `candelabra` | Candleabra Triple | `4db44328-9c09-4eaf-91de-90d895e5a5d8` |
+| `curtain` | Curtain red 01 | `defe3e8d-3382-4559-86bf-c04880433118` |
+| `spear` | hell_spike_spear | `03d4d3ec-b37b-46c6-93b5-555cfeb2cd77` |
+| `trash1` | trash pile 01 | `09e79717-0502-4b64-8ee7-7f3e55578b55` |
+| `trash2` | trash pile 02 | `5ffacfc9-436f-4ef0-a59c-5593e7d95942` |
+| `trash3` | trash pile 03 | `69330e8e-b726-4cae-9d51-cf4d3da4fcf2` |
+| `trashmess` | trash mess 01 | `6588b037-56e6-4a4c-b7cd-0f28f25eb66b` |
+| `trashbag` | trashbag | `360c119b-d709-45a0-a32b-6f6a8d25f62d` |
+| `debris1` | concrete debris 01 | `377c6159-b7f9-4282-9199-fc0b82ab571a` |
+| `debris2` | concrete debris 02 | `de8b707e-589e-45d9-a393-9a75de901b2a` |
+| `debris3` | concrete debris 03 | `4a63d89b-04a4-4ab8-97f3-12d91b3c911c` |
+| `skeleton` | Skeleton 01 | `737d0f69-857d-481f-949a-e8b4930b11ac` |
+| `vendbroken` | vanding machine pop broken | `31363cf2-ee8c-42fe-aeb1-3ffdef0ee500` |
+| `grate` | Road_grate01_1x1 | `35678157-d99e-4506-a995-47675862476b` |
+| `floor_white` | scifi floor 1x1 metal plane white | `dcb2a873-7d92-4759-90d4-8347d9a173c4` |
+| `glass1` | window 1x1 floor | `e90f68c2-5767-4642-888e-ef705557eeac` |
+| `glass2` | window 2x2 floor | `715d057d-f4a0-4355-8a9f-4f077af488cb` |
+| `jug` | cyberpunk jug 01 | `06992b02-c00a-4d8f-a85a-719736adabc9` |
+| `bin` | item_bin_001 | `79dbb960-dd77-4f8f-b578-7e189e572a56` |
+| `jerrycan` | jerrycan_01 | `4b292d0c-19b0-4a6a-86c7-9bfd44ab64af` |
+| `cardboard` | cardboard box | `f41e9715-d55a-499b-874e-481bf4f36551` |
+| `tripod` | Tripod 01 | `aa10feae-a8b6-419e-bb25-b2b7accc5415` |
+| `gun` | Gun | `35026064-127b-414e-9a0d-eaaa7fc041b3` |
+| `shower` | shower residential | `ca43c33b-c94a-47fd-a241-90baf2aa88b6` |
+| `screenthick` | scifi_set_Screen thick 01 | `a959c3a6-a6bf-46c4-ab7f-ba6936e42a04` |
 
 ---
 

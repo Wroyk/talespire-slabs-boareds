@@ -140,6 +140,33 @@ A = {
     "ksink": ("fd365f56-dd8f-43ec-a700-c072af7d42ef", "kitchen_sink_001"),
     "surgery": ("eda4fafa-71ef-4628-8f60-e4bdba9a51b1", "Surgery Bed v1"),
     "surglamp": ("349aed42-a69a-45f6-8d20-0a62381461ed", "Surgery lamp"),
+    # adventure dressing (Search & Salvage)
+    "candle": ("61c18e99-1d7d-4403-9cab-6fe9fdd8d261", "Candle"),
+    "candelabra": ("4db44328-9c09-4eaf-91de-90d895e5a5d8", "Candleabra Triple"),
+    "curtain": ("defe3e8d-3382-4559-86bf-c04880433118", "Curtain red 01"),
+    "spear": ("03d4d3ec-b37b-46c6-93b5-555cfeb2cd77", "hell_spike_spear"),
+    "trash1": ("09e79717-0502-4b64-8ee7-7f3e55578b55", "trash pile 01"),
+    "trash2": ("5ffacfc9-436f-4ef0-a59c-5593e7d95942", "trash pile 02"),
+    "trash3": ("69330e8e-b726-4cae-9d51-cf4d3da4fcf2", "trash pile 03"),
+    "trashmess": ("6588b037-56e6-4a4c-b7cd-0f28f25eb66b", "trash mess 01"),
+    "trashbag": ("360c119b-d709-45a0-a32b-6f6a8d25f62d", "trashbag"),
+    "debris1": ("377c6159-b7f9-4282-9199-fc0b82ab571a", "concrete debris 01"),
+    "debris2": ("de8b707e-589e-45d9-a393-9a75de901b2a", "concrete debris 02"),
+    "debris3": ("4a63d89b-04a4-4ab8-97f3-12d91b3c911c", "concrete debris 03"),
+    "skeleton": ("737d0f69-857d-481f-949a-e8b4930b11ac", "Skeleton 01"),
+    "vendbroken": ("31363cf2-ee8c-42fe-aeb1-3ffdef0ee500", "vanding machine pop broken"),
+    "grate": ("35678157-d99e-4506-a995-47675862476b", "Road_grate01_1x1"),
+    "floor_white": ("dcb2a873-7d92-4759-90d4-8347d9a173c4", "scifi floor 1x1 metal plane white"),
+    "glass1": ("e90f68c2-5767-4642-888e-ef705557eeac", "window 1x1 floor"),
+    "glass2": ("715d057d-f4a0-4355-8a9f-4f077af488cb", "window 2x2 floor"),
+    "jug": ("06992b02-c00a-4d8f-a85a-719736adabc9", "cyberpunk jug 01"),
+    "bin": ("79dbb960-dd77-4f8f-b578-7e189e572a56", "item_bin_001"),
+    "jerrycan": ("4b292d0c-19b0-4a6a-86c7-9bfd44ab64af", "jerrycan_01"),
+    "cardboard": ("f41e9715-d55a-499b-874e-481bf4f36551", "cardboard box"),
+    "tripod": ("aa10feae-a8b6-419e-bb25-b2b7accc5415", "Tripod 01"),
+    "gun": ("35026064-127b-414e-9a0d-eaaa7fc041b3", "Gun"),
+    "shower": ("ca43c33b-c94a-47fd-a241-90baf2aa88b6", "shower residential"),
+    "screenthick": ("a959c3a6-a6bf-46c4-ab7f-ba6936e42a04", "scifi_set_Screen thick 01"),
 }
 
 # ----------------------------------------------------------------------------- LAYOUT
@@ -188,7 +215,9 @@ ROOMS["mess_rw_link"] = rect(44, 10, 44, 11)
 ROOMS["rw_hall"] = rect(45, 8, 49, 13) | rect(50, 10, 50, 12)
 ROOMS["rw_north"] = rect(47, 7, 48, 7)
 ROOMS["rw_south"] = rect(47, 14, 48, 15)
-ROOMS["topright"] = {(45, 3), (46, 2), (46, 3), (46, 4)} | rect(47, 1, 49, 5) | rect(47, 6, 48, 6)
+ROOMS["medbay"] = rect(45, 1, 49, 3) | rect(46, 4, 49, 4) | rect(47, 5, 49, 5) | rect(47, 6, 48, 6)
+ROOMS["vent_tunnel"] = rect(28, 2, 44, 2)      # crawl tunnel medbay -> observation room (adventure)
+ROOMS["pod_bay"] = rect(46, 22, 48, 29)        # escape-pod bay behind the starboard corridor
 ROOMS["machine"] = rect(44, 17, 48, 21) | rect(45, 16, 48, 16) | rect(41, 18, 43, 21) | rect(40, 20, 40, 21)
 ROOMS["reactor"] = rect(49, 16, 50, 18) | {(51, 17)}
 ROOMS["corr_right"] = rect(49, 19, 50, 29)
@@ -211,7 +240,7 @@ DIAG_CELLS = {
     (25, 27), (26, 28),                                              # hydroponics chamfer
     (42, 8), (43, 9), (42, 13), (43, 12),                            # mess hall east chamfers
     (50, 9), (50, 13),                                               # right wing
-    (45, 2), (46, 1), (45, 4), (46, 5),                              # top-right block
+    (45, 4), (46, 5),                                                # medbay chamfer
     (44, 16), (43, 17),                                              # machine room
     (51, 16), (51, 18),                                              # reactor bulge
     (45, 28), (44, 29), (36, 26), (37, 27),                          # lower room
@@ -228,7 +257,7 @@ DIAG_WALLS = [
     ((25, 27), (27, 29)),
     ((42, 8), (44, 10)), ((44, 12), (42, 14)),
     ((50, 9), (51, 10)), ((51, 13), (50, 14)),
-    ((45, 3), (47, 1)), ((45, 4), (47, 6)),
+    ((45, 4), (47, 6)),
     ((43, 18), (45, 16)),
     ((51, 16), (52, 17)), ((52, 18), (51, 19)),
     ((36, 26), (38, 28)), ((34, 26), (32, 28)),
@@ -247,7 +276,15 @@ PARTITIONS = (
     + [("v", 39, 22), ("v", 39, 23), ("h", 39, 22)]
     + [("h", c, 22) for c in (40, 42, 43, 44, 45)]
     + [("h", 36, 24), ("h", 37, 24), ("h", 38, 24), ("v", 36, 24), ("v", 36, 25)]
+    + [("h", c, 3) for c in range(28, 45)]                       # tunnel | top corridor
+    + [("v", 49, r) for r in (23, 25, 27, 29)]                   # pod bay | starboard corridor
+    + [("v", 46, r) for r in range(22, 28)]                      # pod bay | engine room
+    + [("h", c, 22) for c in (46, 47, 48)] + [("h", c, 30) for c in (46, 47, 48)]
 )
+# wall edges destroyed by the explosion in the medical bay (hull breach / entry point)
+BREACH_EDGES = {("h", 48, 1), ("h", 49, 1), ("v", 50, 1)}
+BREACH_CELLS = {(47, 1), (48, 1), (49, 1), (48, 2), (49, 2)}          # no ceiling / roof above
+BREACH_HULL = {(48, 0), (49, 0), (50, 0), (50, 1), (50, 2)}          # hull torn away
 
 # Doors: edge -> kind ('door' single, 'door2' half of a double door, 'hatch' airlock/pod hatch)
 DOORS = {
@@ -265,7 +302,9 @@ DOORS = {
     ("v", 41, 19): "door",
     ("h", 39, 8): "door", ("h", 39, 14): "door",
     ("v", 44, 10): "door2", ("v", 44, 11): "door2",
-    ("h", 47, 7): "door2", ("h", 48, 7): "door2",
+    ("h", 47, 7): "hatch", ("h", 48, 7): "hatch",          # plastic quarantine airlock
+    ("v", 28, 2): "hatch", ("v", 45, 2): "hatch",          # vent tunnel hatches
+    ("h", 24, 5): "door",                                  # observation room
     ("h", 47, 15): "door2", ("h", 48, 15): "door2",
     ("h", 41, 22): "door",
     ("v", 49, 22): "hatch", ("v", 49, 24): "hatch", ("v", 49, 26): "hatch", ("v", 49, 28): "hatch",
@@ -301,10 +340,7 @@ for (x, ry, f) in [(15.3, 9.6, "S"), (16.7, 9.6, "S"), (15.3, 12.4, "N"), (16.7,
 prop("console", 16.0, 7.4, FACE["S"]); prop("chair", 16.0, 8.4, FACE["N"])
 prop("plant1", 13.6, 9.5, 0); prop("plant2", 18.4, 12.5, 0)
 # -- engineering
-for r in (16, 17, 18):
-    prop("locker", 14.5, r + 0.5, FACE["E"])
-for r in (16, 17, 18, 19):
-    prop("locker", 18.5, r + 0.5, FACE["W"])
+prop("locker", 18.5, 19.5, FACE["W"])
 prop("terminal", 16.0, 18.5, FACE["N"]); prop("seat", 16.0, 17.5, FACE["S"])
 for c in (16, 17, 18):
     prop("console_screen", c + 0.5, 21.5, FACE["N"])
@@ -312,7 +348,8 @@ prop("console_main", 15.3, 20.7, 135)
 prop("pipe2", 17.5, 16.4, 90)
 # -- storage / closet
 prop("bench", 23.0, 5.5, FACE["S"]); prop("bench", 25.0, 5.5, FACE["S"])
-prop("crate", 23.5, 8.5, 0); prop("case", 25.5, 7.5, 15)
+prop("trash1", 23.5, 8.3, 0); prop("trashmess", 25.6, 7.4, 30); prop("trashbag", 22.6, 6.6, 0)
+prop("debris1", 24.4, 9.3, 15); prop("trash2", 26.3, 9.2, 0)
 prop("wallcase", 21.5, 7.5, FACE["E"])
 # -- central corridor clutter
 prop("casemini2", 28.5, 22.5, 15); prop("casemini2", 28.4, 23.6, 345)
@@ -332,10 +369,28 @@ prop("toilet", 39.5, 14.5, FACE["N"]); prop("sink", 40.5, 14.5, FACE["N"])
 prop("cryo", 46.0, 8.5, 90); prop("cryo", 46.0, 13.5, 90)
 prop("cryo", 49.5, 9.4, 315); prop("cryo", 49.5, 12.6, 45)
 prop("locker2", 50.6, 11.0, FACE["W"])
-prop("rubble", 46.2, 12.3, 0)
+prop("rubble", 46.2, 12.3, 0); prop("debris1", 47.6, 11.2, 0)
+for (x, ry) in [(45.4, 10.2), (46.3, 9.6), (47.2, 10.9), (48.1, 9.3), (48.6, 11.6), (45.6, 12.9), (47.0, 12.2), (49.3, 11.0)]:
+    prop("candle", x, ry, 0)
+prop("candelabra", 46.5, 11.0, 0)
+# -- engine room (lower): the dead engine with EMP spears, candle light, garbage
+prop("engine", 41.5, 25.5, 90)
+for (x, ry, r) in [(40.6, 25.0, 20), (42.3, 26.2, 300), (41.8, 24.3, 45), (40.9, 26.4, 330)]:
+    prop("spear", x, ry, r)
+for (x, ry) in [(39.6, 23.4), (43.8, 23.2), (44.5, 26.6), (39.4, 27.4), (42.6, 28.6)]:
+    prop("candle", x, ry, 0)
+prop("candelabra", 44.3, 24.6, 0); prop("trash2", 39.8, 28.6, 0); prop("cardboard", 44.0, 22.6, 10)
+# -- crew quarters: drapes, blood-stained shower, broken vending machine
+prop("curtain", 33.0, 9.2, FACE["S"]); prop("curtain", 37.0, 9.2, FACE["S"]); prop("curtain", 35.0, 12.9, FACE["N"])
+prop("shower", 40.5, 14.5, FACE["N"])
+# -- medical bay (exploded): surgery bed, debris, body in EVA suit floating outside the breach
+prop("surgery", 48.0, 2.6, 90); prop("surglamp", 48.0, 2.6, 0); prop("medkit", 46.6, 2.4, 0)
+prop("debris2", 46.5, 3.4, 0); prop("debris3", 48.6, 1.5, 30); prop("debris1", 47.3, 4.7, 0); prop("chest", 49.3, 3.6, 40)
+prop("skeleton", 51.3, 0.5, 60); prop("helm", 50.4, 0.3, 0)
+# -- boltgun trap at the cargo bay door, computer panel in the vent tunnel
+prop("tripod", 34.6, 25.4, FACE["S"]); prop("terminal", 36.5, 2.5, FACE["S"])
 # -- top-right block
-prop("terminal", 48.6, 1.4, 315)
-prop("lamp", 49.5, 4.5, 0)
+prop("terminal", 45.6, 1.5, 135)
 # -- machine room / reactor
 prop("bench", 42.0, 18.5, FACE["S"]); prop("bench", 46.0, 16.5, FACE["S"]); prop("bench", 45.0, 21.5, FACE["N"])
 prop("casemini", 44.0, 21.3, 20); prop("casemini", 46.0, 21.3, 340)
@@ -352,8 +407,9 @@ prop("rubble", 33.0, 20.3, 0); prop("rubble", 36.2, 19.6, 0)
 prop("chest", 38.6, 21.6, 10); prop("locker2", 38.6, 23.2, FACE["W"]); prop("chest", 39.5, 21.0, 0)
 # -- hydroponics
 prop("bench", 25.5, 26.0, FACE["E"]); prop("bench", 27.3, 28.5, FACE["N"])
-prop("plant1", 26.6, 25.6, 0); prop("plant2", 27.5, 27.4, 0); prop("bucket", 26.4, 27.3, 0)
-prop("pitcher", 27.6, 25.6, 0); prop("casemini2", 26.1, 26.9, 30)
+prop("cable", 26.6, 25.8, 0); prop("cable", 27.4, 27.2, 90); prop("jug", 26.3, 27.4, 0); prop("jug", 27.7, 25.5, 20)
+prop("bin", 26.2, 26.6, 0); prop("jerrycan", 27.6, 26.6, 40); prop("cardboard", 26.8, 28.2, 0)
+prop("trash3", 27.3, 26.2, 0); prop("trashbag", 25.9, 25.4, 0)
 # -- hangar
 prop("bed", 36.6, 27.4, 45)
 prop("bench", 32.5, 29.0, FACE["E"]); prop("bench", 37.5, 29.0, FACE["W"])
@@ -366,21 +422,23 @@ for r in (22, 24, 26, 28):
 
 # Floor type per room (1x1 key, optional 2x2 key); default is the plain space ship floor
 ROOM_FLOOR = {
-    "corr_top_w": ("floor_corr", None), "corr_top_e": ("floor_corr", None), "corr_central": ("floor_corr", None),
-    "corr_hex_east": ("floor_corr", None), "corr_right": ("floor_corr", None), "passage20": ("floor_corr", None),
+    "corr_top_w": ("floor_corr", None), "corr_top_e": ("floor_corr", None), "corr_central": ("grate", None),
+    "vent_tunnel": ("floor_metal", None), "pod_bay": ("floor_metal", None), "medbay": ("floor_white", None),
+    "corr_hex_east": ("floor_corr", None), "corr_right": ("grate", None), "passage20": ("floor_corr", None),
     "closet": ("floor_corr", None), "bridge_link": ("floor_corr", None), "hex_east": ("floor_corr", None),
     "hex_south": ("floor_corr", None), "vestibule": ("floor_corr", None), "mess_rw_link": ("floor_corr", None),
     "rw_north": ("floor_corr", None), "rw_south": ("floor_corr", None),
-    "cargo": ("floor_ind1", "floor_ind2"), "hangar": ("floor_ind1", "floor_ind2"), "cargo_closet": ("floor_ind1", None),
-    "storage": ("floor_ind1", "floor_ind2"), "lower": ("floor_ind1", "floor_ind2"),
-    "engineering": ("floor_rub1", "floor_rub2"), "machine": ("floor_rub1", "floor_rub2"),
+    "cargo": ("floor_rub1", "floor_rub2"), "hangar": ("floor_ind1", "floor_ind2"), "cargo_closet": ("floor_rub1", None),
+    "storage": ("floor_strip", None), "lower": ("floor_ind1", "floor_ind2"),
+    "engineering": ("floor_white", None), "machine": ("floor_rub1", "floor_rub2"),
     "reactor": ("floor_metal", None), "generator": ("floor_metal", None),
     "airlock_n": ("floor_metal", None), "airlock_s": ("floor_metal", None),
     "hydroponics": ("floor_strip", None), "bath_n": ("floor_strip", None), "bath_s": ("floor_strip", None),
 }
 # corridors: every third cell gets a glowing floor tile, and light strips go on their walls
-GLOW_CORRIDORS = ("corr_top_e", "corr_central", "corr_hex_east", "corr_right", "corr_top_w")
-LIT_ROOMS = GLOW_CORRIDORS + ("hex_south", "hex_east", "bridge_link", "mess_rw_link", "rw_south", "passage20")
+GLOW_CORRIDORS = ("corr_top_e", "corr_hex_east", "corr_top_w")
+LIT_ROOMS = GLOW_CORRIDORS + ("corr_central", "corr_right", "hex_south", "hex_east", "bridge_link",
+                              "mess_rw_link", "rw_south", "passage20", "vent_tunnel", "pod_bay")
 
 # Wall edges that become windows instead of plain walls
 WINDOW_EDGES = {
@@ -394,12 +452,15 @@ WINDOW_EDGES = {
     ("h", 33, 16), ("h", 34, 16), ("h", 36, 16), ("h", 37, 16),
     ("h", 26, 2), ("h", 27, 2),                                   # corridor arch
     ("v", 25, 25), ("v", 25, 26),                                 # hydroponics (lab window)
-    ("h", 47, 1), ("h", 48, 1), ("h", 49, 1),                     # top-right block
+    ("h", 47, 1),                                                 # medbay
+    ("h", 22, 5), ("h", 23, 5), ("h", 25, 5), ("v", 27, 6), ("v", 27, 7), ("v", 27, 8), ("v", 27, 9),
+    ("h", 22, 10), ("h", 23, 10), ("h", 24, 10), ("h", 25, 10), ("h", 26, 10),
+    ("v", 22, 5), ("v", 22, 6), ("v", 22, 7), ("v", 22, 8), ("v", 22, 9),   # observation room
     ("v", 51, 10), ("v", 51, 11), ("v", 51, 12),                  # starboard hall
 }
 LAB_WINDOWS = {("v", 25, 25), ("v", 25, 26)}
 DIAG_WINDOWS = {((5, 8), (3, 10)), ((3, 12), (5, 14)), ((14, 8), (13, 9)), ((18, 8), (19, 9)),
-                ((13, 13), (14, 14)), ((19, 13), (18, 14)), ((45, 3), (47, 1))}
+                ((13, 13), (14, 14)), ((19, 13), (18, 14))}
 
 # Extra props with explicit height: (key, x, row_y, rot, y)
 X = []
@@ -413,8 +474,7 @@ def xprop(key, x, ry, rot=0, y=0.0):
 for ry in (17.5, 24.5, 31.0):
     xprop("jetbase", 53.0, ry, FACE["E"]); xprop("jet", 54.2, ry, FACE["E"])
 xprop("engine", 53.0, 24.5, FACE["E"], ROOF_Y)
-for (x, ry, f) in [(7.5, 4.2, "N"), (8.5, 4.2, "N"), (7.5, 17.8, "S"), (8.5, 17.8, "S"),
-                   (0.3, 9.4, "W"), (0.3, 12.6, "W"), (35.5, 34.0, "S"), (33.5, 34.0, "S")]:
+for (x, ry, f) in [(35.5, 34.0, "S"), (33.5, 34.0, "S")]:
     xprop("thruster", x, ry, FACE[f], 0.5)
 # -- roof greebles (on the hull plating)
 for (x, ry) in [(29.0, 6.0), (23.0, 13.0), (41.0, 19.5), (32.0, 27.0), (16.0, 19.0), (6.5, 7.0)]:
@@ -430,7 +490,9 @@ for (x, ry) in [(14.5, 9.0), (17.5, 9.0), (14.5, 12.5), (17.5, 12.5), (36.0, 26.
     xprop("ventbox", x, ry, 0, ROOF_Y)
 for (x, ry, r) in [(5.0, 9.5, 90), (5.0, 12.5, 90), (9.0, 9.5, 90), (9.0, 12.5, 90)]:
     xprop("ventlong", x, ry, r, ROOF_Y)
-xprop("dish", 48.0, 3.0, FACE["E"], ROOF_Y)
+xprop("dish", 46.0, 5.0, FACE["E"], ROOF_Y)
+for (x, ry, r) in [(12.5, 8.5, 0), (19.5, 8.5, 0), (12.5, 12.5, 0), (19.5, 12.5, 0)]:
+    xprop("solar", x, ry, r, ROOF_Y)
 xprop("dish", 46.5, 10.5, FACE["N"], ROOF_Y + TIER2_H)
 for (x, ry) in [(33.0, 9.0), (36.0, 9.0), (39.0, 9.0), (33.0, 12.5), (36.0, 12.5), (39.0, 12.5)]:
     xprop("solar", x, ry, 90, ROOF_Y + TIER2_H)
@@ -445,9 +507,12 @@ xprop("screen", 7.0, 8.1, FACE["S"], SIGN_Y); xprop("screen", 9.0, 8.1, FACE["S"
 xprop("screen3", 11.5, 9.9, FACE["S"], SIGN_Y); xprop("signcockpit", 12.5, 9.9, FACE["S"], SIGN_Y + 0.4)
 xprop("screen", 32.5, 8.1, FACE["S"], SIGN_Y); xprop("screen3", 38.5, 8.1, FACE["S"], SIGN_Y)
 xprop("security", 27.1, 12.5, FACE["E"], SIGN_Y); xprop("security", 28.9, 18.5, FACE["W"], SIGN_Y)
-xprop("security", 44.9, 9.5, FACE["E"], SIGN_Y); xprop("screen", 47.1, 1.5, FACE["E"], SIGN_Y)
+xprop("security", 44.9, 9.5, FACE["E"], SIGN_Y)
 xprop("signplanet", 16.0, 7.1, FACE["S"], SIGN_Y + 0.5)
-xprop("signmed", 40.5, 8.1, FACE["S"], SIGN_Y + 0.4)
+xprop("signmed", 47.5, 6.1, FACE["N"], SIGN_Y + 0.4)
+for (x, ry, k) in [(14.1, 16.5, "screen"), (14.1, 17.5, "screen3"), (14.1, 18.5, "screenthick"), (14.1, 19.5, "screen"),
+                   (18.9, 16.5, "screen3"), (18.9, 17.5, "screen"), (18.9, 18.5, "screenthick")]:
+    xprop(k, x, ry, FACE["E"] if x < 15 else FACE["W"], SIGN_Y)
 for (x, ry, f) in [(6.6, 7.0, "E"), (9.4, 7.0, "W"), (6.6, 14.9, "E"), (9.4, 14.9, "W"),
                    (33.9, 31.9, "N"), (35.1, 31.9, "N"), (48.9, 22.5, "E"), (48.9, 24.5, "E"),
                    (48.9, 26.5, "E"), (48.9, 28.5, "E")]:
@@ -457,9 +522,9 @@ for (x, ry, f) in [(27.1, 5.5, "E"), (28.9, 9.5, "W"), (29.1, 10.1, "S"), (43.9,
     xprop("cam", x, ry, FACE[f], 1.8)
 # -- galley corner of the mess hall (west wall), med-bay corner (north-east), weapon racks, cabling
 xprop("counter", 31.9, 11.5, FACE["E"]); xprop("ksink", 31.9, 10.5, FACE["E"]); xprop("stove", 31.9, 12.5, FACE["E"])
-xprop("fridge", 32.5, 8.4, FACE["S"]); xprop("vending", 38.5, 8.4, FACE["S"])
-xprop("surgery", 40.0, 9.0, 90); xprop("surglamp", 40.0, 9.0, 0)
-xprop("rackweap", 21.9, 8.0, FACE["W"]); xprop("rackweap", 46.0, 20.9, FACE["N"])
+xprop("fridge", 32.5, 8.4, FACE["S"]); xprop("vendbroken", 38.5, 8.4, FACE["S"])
+xprop("gun", 34.6, 25.4, FACE["S"], 0.6)
+xprop("rackweap", 46.0, 20.9, FACE["N"])
 xprop("cableceil", 27.5, 16.0, 0, CEIL_Y - 0.1); xprop("cableceil", 16.0, 18.5, 90, CEIL_Y - 0.1)
 xprop("cableceil", 46.0, 19.0, 0, CEIL_Y - 0.1)
 for (x, ry, f) in [(5.5, 11.0, "E"), (10.5, 11.0, "W"), (16.0, 13.9, "N"), (23.5, 9.9, "N"), (36.0, 13.9, "N"),
@@ -504,6 +569,8 @@ def main(out_dir):
         edges[key] = "wall"
     for key, kind in DOORS.items():
         edges[key] = kind
+    for key in BREACH_EDGES:
+        edges.pop(key, None)
 
     # --- slabs
     s_floor, s_walls, s_props, s_ceil, s_detail, s_hull = (Slab() for _ in range(6))
@@ -622,12 +689,12 @@ def main(out_dir):
         add(target, key, x, y, NROWS - ry, rot)
 
     # interior ceiling
-    for (c, r) in sorted(all_cells):
-        add(s_ceil, "ceil", c, CEIL_Y, wz(r + 1), 0)
+    skylight = ROOMS["hex"] | ROOMS["hex_apse"]
+    for (c, r) in sorted(all_cells - BREACH_CELLS):
+        add(s_ceil, "glass1" if (c, r) in skylight else "ceil", c, CEIL_Y, wz(r + 1), 0)
 
-    # --- hull: one ring of cells around the interior, exterior hull walls, roof plating
-    # hull = one-cell ring around every room, plus all voids enclosed by that ring (pod bay, gaps
-    # between rooms), so the ship has one closed silhouette; found by flooding from outside.
+    # --- hull: one ring of cells around every room plus all enclosed voids (found by flooding
+    # from outside), exterior hull walls, chamfered corners, solid filling, roof plating.
     shell = dilate8(all_cells)
     outside, stack = set(), [(-2, -2)]
     while stack:
@@ -640,13 +707,55 @@ def main(out_dir):
         outside.add(cell)
         stack += [(c + 1, r), (c - 1, r), (c, r + 1), (c, r - 1)]
     hull_cells = {(c, r) for c in range(-1, NCOLS + 1) for r in range(-1, NROWS + 1)} - outside
+
+    # exterior chamfer lines: interior diagonals pushed one cell outward
+    ext_lines = []
+    for seg in DIAG_WALLS:
+        if len(seg) > 2:
+            continue
+        (c0, r0), (c1, r1) = seg[0], seg[1]
+        x0, z0, x1, z1 = c0, wz(r0), c1, wz(r1)
+        length = math.hypot(x1 - x0, z1 - z0)
+        nx, nz = -(z1 - z0) / length, (x1 - x0) / length
+        mx, mz = (x0 + x1) / 2, (z0 + z1) / 2
+        probe = (int(math.floor(mx + nx * 0.6)), int(math.floor(NROWS - (mz + nz * 0.6))))
+        if probe in floor:
+            nx, nz = -nx, -nz
+        ext_lines.append(((x0 + nx, z0 + nz), (x1 + nx, z1 + nz), (nx, nz)))
+
+    def beyond(px, pz, margin):
+        """distance of a point past an exterior chamfer line (outward side), or None."""
+        best = None
+        for (ax, az), (bx, bz), (nx, nz) in ext_lines:
+            dx, dz = bx - ax, bz - az
+            L = math.hypot(dx, dz)
+            t = ((px - ax) * dx + (pz - az) * dz) / (L * L)
+            if -0.6 / L <= t <= 1 + 0.6 / L:
+                d = (px - ax) * nx + (pz - az) * nz
+                if d > margin and (best is None or d > best):
+                    best = d
+        return best
+
     ring = hull_cells - all_cells
+    ring = {(c, r) for (c, r) in ring if beyond(c + 0.5, wz(r + 1) + 0.5, 0.25) is None} - BREACH_HULL
+    hull_cells = all_cells | ring
     for (c, r) in sorted(ring):
         for key, nb in neighbours4(c, r).items():
-            if nb not in hull_cells:
-                place_edge(s_hull, "hullwall", *key)
+            if nb in hull_cells:
+                continue
+            axis, ec, er = key
+            mx = ec + (0.5 if axis == "h" else 0)
+            mz = wz(er) - (0.5 if axis == "v" else 0)
+            if beyond(mx, mz, -0.45) is not None:   # covered by the chamfer piece
+                continue
+            place_edge(s_hull, "hullwall", *key)
         add(s_hull, "hullfloor1", c, 0, wz(r + 1), 0)
-    plate(s_hull, hull_cells, ROOF_Y, lambda cell: ("hullfloor1", "hullfloor2"))
+        # fill the between-hull space with crossed hull blocks so it reads as solid structure
+        add(s_hull, "hullwall", c, 0, wz(r + 1) + 0.5 - WALL_T / 2, rot_x)
+        add(s_hull, "hullwall", c + 0.5 - WALL_T / 2, 0, wz(r + 1), rot_z)
+    roof_cells = hull_cells - BREACH_CELLS
+    plate(s_hull, roof_cells - skylight, ROOF_Y, lambda cell: ("floor1", "floor2"))
+    plate(s_hull, skylight, ROOF_Y, lambda cell: ("glass1", "glass2"))
 
     # --- superstructure (tier 2) over the mess-hall block, with its own hull walls and plating
     core = set().union(*(ROOMS[n] for n in ("mess", "alcove_nw", "alcove_ne", "alcove_sw", "alcove_se",
