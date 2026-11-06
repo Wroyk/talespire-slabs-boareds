@@ -49,14 +49,14 @@ auf dem Dach und Umriss des zweiten Hüllenstockwerks, Kreise = Props, grüne K�
 
 | Datei | Inhalt | Assets |
 |---|---|---|
-| `grasshopper/grasshopper_full.slab.txt` | **Alles in einem** | 3740 |
-| `grasshopper/grasshopper_A_interior.slab.txt` | Boden, Wände, Türen, Fenster, Props, Details, Lichter | 1262 |
-| `grasshopper/grasshopper_B_ceiling.slab.txt` | Decke (y = 2.0), Glasdecke Taktikraum | 690 |
-| `grasshopper/grasshopper_C_hull_roof_engines.slab.txt` | Hülle, Dachplatten, Aufbauten, 2. Stockwerk, Triebwerke | 1791 |
-| `grasshopper/grasshopper_layer_floor.slab.txt` | nur Boden | 410 |
-| `grasshopper/grasshopper_layer_walls_doors.slab.txt` | nur Wände, Türen, Fenster, Luken | 445 |
-| `grasshopper/grasshopper_layer_props.slab.txt` | nur Möbel | 159 |
-| `grasshopper/grasshopper_layer_details_lights.slab.txt` | nur Lichtleisten, Säulen, Schilder, Bildschirme | 251 |
+| `grasshopper/grasshopper_full.slab.txt` | **Alles in einem** | 3801 |
+| `grasshopper/grasshopper_A_interior.slab.txt` | Boden, Wände, Türen, Fenster, Props, Details, Lichter | 1202 |
+| `grasshopper/grasshopper_B_ceiling.slab.txt` | Decke (y = 2.0), Glasdecke Taktikraum | 601 |
+| `grasshopper/grasshopper_C_hull_roof_engines.slab.txt` | Hülle, Dachplatten, Aufbauten, 2. Stockwerk, Triebwerke | 2001 |
+| `grasshopper/grasshopper_layer_floor.slab.txt` | nur Boden | 366 |
+| `grasshopper/grasshopper_layer_walls_doors.slab.txt` | nur Wände, Türen, Fenster, Luken | 441 |
+| `grasshopper/grasshopper_layer_props.slab.txt` | nur Möbel | 157 |
+| `grasshopper/grasshopper_layer_details_lights.slab.txt` | nur Lichtleisten, Säulen, Schilder, Bildschirme | 241 |
 
 Der volle Slab ist rund 14 KB komprimiert, TaleSpire erlaubt 30 KB.
 

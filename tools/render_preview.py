@@ -23,8 +23,10 @@ def render(out_png, plan_png=None, X0=117.0, Y0=164.0, P=59.1):
 
     for (c, r) in ring:
         d.rectangle([px(c, r), px(c + 1, r + 1)], fill=(90, 90, 90, 120))
-    for (c, r) in floor:
+    for (c, r) in floor - bg.HOLE_CELLS:
         d.rectangle([px(c, r), px(c + 1, r + 1)], fill=(0, 160, 255, 70))
+    for (c, r) in bg.HOLE_CELLS:
+        d.rectangle([px(c, r), px(c + 1, r + 1)], fill=(0, 0, 0, 255))
     for (c, r) in diag:
         d.rectangle([px(c, r), px(c + 1, r + 1)], fill=(255, 200, 0, 90))
     colors = {"wall": (220, 0, 0, 230), "door": (0, 170, 0, 230), "door2": (0, 170, 0, 230), "hatch": (170, 0, 170, 230)}

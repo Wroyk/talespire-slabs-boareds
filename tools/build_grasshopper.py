@@ -210,7 +210,6 @@ ROOMS["engineering"] = rect(14, 16, 18, 21) - {(14, 20), (14, 21), (15, 21)}
 # Top-left block
 ROOMS["closet"] = rect(21, 5, 21, 9)            # small airlock strip with two hatches
 ROOMS["corr_top_w"] = (rect(20, 3, 28, 4) - {(20, 3)}) | rect(26, 2, 27, 2)
-ROOMS["storage"] = rect(22, 5, 26, 9) - {(26, 5)}
 ROOMS["corr_central"] = rect(27, 5, 28, 24)
 ROOMS["corr_hex_east"] = rect(20, 10, 26, 11) | rect(29, 10, 30, 11)
 ROOMS["hydroponics"] = rect(25, 25, 28, 28) - {(25, 27), (25, 28), (26, 28)}
@@ -235,8 +234,6 @@ ROOMS["reactor"] = rect(49, 16, 50, 18) | {(51, 17)}
 ROOMS["vestibule"] = rect(29, 20, 29, 21)
 ROOMS["cargo"] = rect(30, 18, 38, 23) | rect(39, 20, 39, 21)
 ROOMS["cargo_closet"] = rect(39, 18, 40, 19)
-ROOMS["lower"] = (rect(39, 22, 45, 23) | rect(36, 24, 45, 25) | rect(37, 26, 45, 26)
-                  | rect(38, 27, 45, 27) | rect(38, 28, 44, 28) | rect(38, 29, 43, 29))
 ROOMS["hangar"] = (rect(34, 24, 35, 26) | rect(33, 27, 36, 27) | rect(32, 28, 37, 30)
                    | rect(34, 31, 35, 32))
 ROOMS["generator"] = rect(44, 30, 48, 30) | rect(44, 31, 47, 31) | rect(44, 32, 46, 32)   # open to the pod bay
@@ -247,14 +244,14 @@ DIAG_CELLS = {
     (4, 8), (3, 9), (4, 13), (3, 12), (10, 8), (10, 13),            # bridge chamfers
     (13, 8), (18, 8), (13, 13), (18, 13),                            # round room corners
     (14, 20), (15, 21),                                              # engineering chamfer
-    (20, 3), (26, 5),                                                # top-left chamfers
+    (20, 3),                                                         # top-left chamfer
     (25, 27), (26, 28),                                              # hydroponics chamfer
     (42, 8), (43, 9), (42, 13), (43, 12),                            # mess hall east chamfers
     (50, 9), (50, 13),                                               # right wing
     (45, 4), (46, 5),                                                # medbay chamfer
     (44, 16), (43, 17),                                              # machine room
     (51, 16), (51, 18),                                              # reactor bulge
-    (45, 28), (44, 29), (36, 26), (37, 27),                          # lower room
+    (45, 28), (44, 29), (36, 26), (37, 27),                          # hangar / generator chamfers
     (33, 26), (32, 27),                                              # hangar funnel
     (48, 31), (47, 32),                                              # generator room
 }
@@ -264,7 +261,7 @@ DIAG_WALLS = [
     ((5, 8), (3, 10)), ((3, 12), (5, 14)), ((10, 8), (11, 9)), ((11, 13), (10, 14)),
     ((14, 8), (13, 9)), ((18, 8), (19, 9)), ((13, 13), (14, 14)), ((19, 13), (18, 14)),
     ((14, 20), (16, 22)),
-    ((20, 4), (21, 3)), ((26, 5), (27, 6)),
+    ((20, 4), (21, 3)),
     ((25, 27), (27, 29)),
     ((42, 8), (44, 10)), ((44, 12), (42, 14)),
     ((50, 9), (51, 10)), ((51, 13), (50, 14)),
@@ -273,21 +270,14 @@ DIAG_WALLS = [
     ((51, 16), (52, 17)), ((52, 18), (51, 19)),
     ((36, 26), (38, 28)), ((34, 26), (32, 28)),
     ((47, 33), (49, 31)),
-    ((46, 28), (44, 30), "door"),
+    ((46, 28), (44, 30), "door"),      # exterior hatches on the generator-room chamfer
 ]
 
 # Explicit walls between two floor cells ('h', col, row) = north edge of cell (col,row) i.e. the
 # boundary at plan row `row`; ('v', col, row) = west edge of cell (col,row), boundary at plan col `col`.
 PARTITIONS = (
-    [("v", 22, r) for r in range(5, 10)]
-    + [("h", c, 5) for c in range(22, 26)] + [("v", 27, r) for r in range(6, 10)]
-    + [("h", c, 10) for c in range(22, 27)]
-    + [("h", 40, 8), ("h", 40, 14)]
+    [("h", 40, 8), ("h", 40, 14)]
     + [("h", 39, 20), ("h", 40, 20), ("v", 39, 18), ("v", 39, 19), ("v", 41, 18)]
-    + [("v", 39, 22), ("v", 39, 23), ("h", 39, 22)]
-    + [("h", c, 22) for c in (40, 42, 43, 44, 45)]
-    + [("h", 36, 24), ("h", 37, 24), ("h", 38, 24), ("v", 36, 24), ("v", 36, 25)]
-    + [("v", 46, r) for r in range(22, 28)]                      # pod bay | engine room
 )
 # wall edges destroyed by the explosion in the medical bay (hull breach / entry point)
 # explosion hole in the medical bay: no floor, no ceiling, no roof (the dashed circle on the plan)
@@ -313,9 +303,7 @@ DOORS = {
     ("h", 39, 8): "door", ("h", 39, 14): "door",
     ("v", 44, 10): "door2", ("v", 44, 11): "door2",
     ("h", 47, 7): "hatch", ("h", 48, 7): "hatch",          # plastic quarantine airlock
-    ("h", 24, 5): "door",                                  # observation room
     ("h", 47, 15): "door2", ("h", 48, 15): "door2",
-    ("h", 41, 22): "door",
 }
 
 # Special floor tiles replacing the standard floor at given cells
@@ -355,9 +343,8 @@ for c in (16, 17, 18):
 prop("console_main", 15.3, 20.7, 135)
 prop("pipe2", 17.5, 16.4, 90)
 # -- storage / closet
-prop("bench", 23.0, 5.5, FACE["S"]); prop("bench", 25.0, 5.5, FACE["S"])
-prop("trash1", 23.5, 8.3, 0); prop("trashmess", 25.6, 7.4, 30); prop("trashbag", 22.6, 6.6, 0)
-prop("debris1", 24.4, 9.3, 15); prop("trash2", 26.3, 9.2, 0)
+prop("bench", 23.0, 4.6, FACE["N"]); prop("bench", 25.0, 4.6, FACE["N"])
+prop("trash1", 22.4, 3.6, 0); prop("trashmess", 27.3, 4.4, 30); prop("trashbag", 21.5, 4.3, 0); prop("debris1", 26.5, 3.3, 15)
 # -- central corridor clutter
 prop("casemini2", 28.5, 22.5, 15); prop("casemini2", 28.4, 23.6, 345)
 # -- mess hall
@@ -380,13 +367,13 @@ prop("rubble", 46.2, 12.3, 0); prop("debris1", 47.6, 11.2, 0)
 for (x, ry) in [(45.4, 10.2), (46.3, 9.6), (47.2, 10.9), (48.1, 9.3), (48.6, 11.6), (45.6, 12.9), (47.0, 12.2), (49.3, 11.0)]:
     prop("candle", x, ry, 0)
 prop("candelabra", 46.5, 11.0, 0)
-# -- engine room (lower): the dead engine with EMP spears, candle light, garbage
-prop("engine", 41.5, 25.5, 90)
-for (x, ry, r) in [(40.6, 25.0, 20), (42.3, 26.2, 300), (41.8, 24.3, 45), (40.9, 26.4, 330)]:
+# -- engine room (machine room): the dead engine with EMP spears, candle light, garbage
+prop("engine", 44.0, 19.5, 90)
+for (x, ry, r) in [(43.2, 19.1, 20), (44.9, 20.2, 300), (44.3, 18.5, 45), (43.5, 20.4, 330)]:
     prop("spear", x, ry, r)
-for (x, ry) in [(39.6, 23.4), (43.8, 23.2), (44.5, 26.6), (39.4, 27.4), (42.6, 28.6)]:
+for (x, ry) in [(42.3, 20.6), (45.7, 18.3), (46.6, 20.5), (41.6, 19.0), (47.4, 17.4)]:
     prop("candle", x, ry, 0)
-prop("candelabra", 44.3, 24.6, 0); prop("trash2", 39.8, 28.6, 0); prop("cardboard", 44.0, 22.6, 10)
+prop("candelabra", 42.0, 18.4, 0); prop("trash2", 47.6, 20.6, 0); prop("cardboard", 41.6, 20.5, 10)
 # -- crew quarters: drapes, blood-stained shower, broken vending machine
 prop("curtain", 33.0, 9.2, FACE["S"]); prop("curtain", 37.0, 9.2, FACE["S"]); prop("curtain", 35.0, 12.9, FACE["N"])
 prop("shower", 40.5, 14.5, FACE["N"])
@@ -401,7 +388,7 @@ prop("tripod", 34.6, 25.4, FACE["S"])
 prop("terminal", 45.6, 1.5, 135)
 # -- machine room / reactor
 prop("bench", 42.0, 18.5, FACE["S"]); prop("bench", 46.0, 16.5, FACE["S"]); prop("bench", 45.0, 21.5, FACE["N"])
-prop("casemini", 44.0, 21.3, 20); prop("casemini", 46.0, 21.3, 340)
+prop("casemini", 46.0, 21.3, 340)
 prop("reactor", 50.0, 17.6, FACE["W"]); prop("cooler", 50.6, 16.6, FACE["W"])
 prop("pipe", 49.3, 16.6, 0); prop("pipe", 49.3, 18.8, 0)
 prop("benchs", 49.5, 16.4, FACE["S"]); prop("benchs", 49.2, 19.8, FACE["E"])
@@ -430,27 +417,27 @@ for r in (22, 24, 26, 28):
 
 # Floor type per room (1x1 key, optional 2x2 key); default is the plain space ship floor
 ROOM_FLOOR = {
-    "corr_top_w": ("floor_corr", None), "corr_top_e": ("floor_corr", None), "corr_central": ("grate", None),
+    "corr_top_e": ("floor_corr", None), "corr_central": ("grate", None),
     "pod_bay": ("floor_metal", None), "medbay": ("floor_white", None),
     "corr_hex_east": ("floor_corr", None),
     "closet": ("floor_corr", None), "bridge_link": ("floor_corr", None), "hex_east": ("floor_corr", None),
     "hex_south": ("floor_corr", None), "vestibule": ("floor_corr", None), "mess_rw_link": ("floor_corr", None),
     "rw_north": ("floor_corr", None), "rw_south": ("floor_corr", None),
     "cargo": ("floor_rub1", "floor_rub2"), "hangar": ("floor_ind1", "floor_ind2"), "cargo_closet": ("floor_rub1", None),
-    "storage": ("floor_strip", None), "lower": ("floor_ind1", "floor_ind2"),
+    "corr_top_w": ("floor_strip", None),
     "engineering": ("floor_white", None), "machine": ("floor_rub1", "floor_rub2"),
     "reactor": ("floor_metal", None), "generator": ("floor_metal", None),
     "airlock_n": ("floor_metal", None), "airlock_s": ("floor_metal", None),
     "hydroponics": ("floor_strip", None), "bath_n": ("floor_strip", None), "bath_s": ("floor_strip", None),
 }
 # corridors: every third cell gets a glowing floor tile, and light strips go on their walls
-GLOW_CORRIDORS = ("corr_top_e", "corr_hex_east", "corr_top_w")
+GLOW_CORRIDORS = ("corr_top_e", "corr_hex_east")
 LIT_ROOMS = GLOW_CORRIDORS + ("corr_central", "hex_south", "hex_east", "bridge_link",
                               "mess_rw_link", "rw_south", "pod_bay")
 # ventilation duct (adventure): a crawl duct on top of the hull from the medbay to the observation
 # room, entered through hatches in those rooms' ceilings
-DUCT_CELLS = rect(24, 3, 46, 3) | {(24, 4), (24, 5)}
-DUCT_HATCHES = {(46, 3), (24, 5)}
+DUCT_CELLS = rect(23, 3, 46, 3) | {(23, 4)}
+DUCT_HATCHES = {(46, 3), (23, 4)}
 # bow: the nose's west wall is the two-part cockpit window front instead of plain window walls
 COCKPIT_EDGES = {("v", 1, 10), ("v", 1, 11)}
 
@@ -467,14 +454,12 @@ WINDOW_EDGES = {
     ("h", 26, 2), ("h", 27, 2),                                   # corridor arch
     ("v", 25, 25), ("v", 25, 26),                                 # hydroponics (lab window)
     ("h", 47, 1),                                                 # medbay
-    ("h", 22, 5), ("h", 23, 5), ("h", 25, 5), ("v", 27, 6), ("v", 27, 7), ("v", 27, 8), ("v", 27, 9),
-    ("h", 22, 10), ("h", 23, 10), ("h", 24, 10), ("h", 25, 10), ("h", 26, 10),
-    ("v", 22, 5), ("v", 22, 6), ("v", 22, 7), ("v", 22, 8), ("v", 22, 9),   # observation room
+    ("h", 21, 3), ("h", 22, 3), ("h", 23, 3), ("h", 24, 3), ("h", 25, 3), ("h", 28, 3),   # observation room (wide corridor part)
     ("v", 51, 10), ("v", 51, 11), ("v", 51, 12),                  # starboard hall
 }
 LAB_WINDOWS = {("v", 25, 25), ("v", 25, 26)}
 DIAG_WINDOWS = {((5, 8), (3, 10)), ((3, 12), (5, 14)), ((14, 8), (13, 9)), ((18, 8), (19, 9)),
-                ((13, 13), (14, 14)), ((19, 13), (18, 14))}
+                ((13, 13), (14, 14)), ((19, 13), (18, 14)), ((20, 4), (21, 3))}
 
 # Extra props with explicit height: (key, x, row_y, rot, y)
 X = []
@@ -497,7 +482,7 @@ for (x, ry, r) in [(27.5, 14.0, 0), (27.5, 17.0, 0), (27.5, 20.0, 0), (27.5, 23.
                    (47.5, 21.0, 0), (47.5, 28.5, 0)]:
     xprop("pipequad", x, ry, r, ROOF_Y)
 xprop("pipecorner", 27.5, 11.5, 0, ROOF_Y); xprop("pipecorner", 47.5, 18.5, 90, ROOF_Y)
-for (x, ry) in [(22.5, 7.5), (25.0, 7.5), (44.5, 19.5), (46.5, 19.5), (45.0, 24.5), (42.0, 24.5)]:
+for (x, ry) in [(22.5, 3.5), (25.0, 3.5), (44.5, 19.5), (46.5, 19.5)]:
     xprop("ac", x, ry, FACE["S"], ROOF_Y)
 for (x, ry) in [(14.5, 9.0), (17.5, 9.0), (14.5, 12.5), (17.5, 12.5), (36.0, 26.5), (33.0, 30.0)]:
     xprop("ventbox", x, ry, 0, ROOF_Y)
@@ -540,8 +525,8 @@ xprop("gun", 34.6, 25.4, FACE["S"], 0.6)
 xprop("rackweap", 46.0, 20.9, FACE["N"])
 xprop("cableceil", 27.5, 16.0, 0, CEIL_Y - 0.1); xprop("cableceil", 16.0, 18.5, 90, CEIL_Y - 0.1)
 xprop("cableceil", 46.0, 19.0, 0, CEIL_Y - 0.1)
-for (x, ry, f) in [(5.5, 11.0, "E"), (10.5, 11.0, "W"), (16.0, 13.9, "N"), (23.5, 9.9, "N"), (36.0, 13.9, "N"),
-                   (47.5, 13.9, "N"), (34.5, 23.9, "N"), (47.5, 21.9, "N"), (27.0, 28.9, "N"), (46.0, 32.9, "N")]:
+for (x, ry, f) in [(5.5, 11.0, "E"), (10.5, 11.0, "W"), (16.0, 13.9, "N"), (23.5, 10.1, "S"), (36.0, 13.9, "N"),
+                   (47.5, 13.9, "N"), (34.5, 23.9, "N"), (27.0, 28.9, "N"), (46.0, 32.9, "N")]:
     xprop("walllamp", x, ry, FACE[f], 1.6)
 
 # ----------------------------------------------------------------------------- BUILD
@@ -710,19 +695,7 @@ def main(out_dir):
 
     # --- hull: one ring of cells around every room plus all enclosed voids (found by flooding
     # from outside), exterior hull walls, chamfered corners, solid filling, roof plating.
-    shell = dilate8(all_cells)
-    outside, stack = set(), [(-2, -2)]
-    while stack:
-        cell = stack.pop()
-        if cell in outside or cell in shell:
-            continue
-        c, r = cell
-        if not (-2 <= c <= NCOLS + 1 and -2 <= r <= NROWS + 1):
-            continue
-        outside.add(cell)
-        stack += [(c + 1, r), (c - 1, r), (c, r + 1), (c, r - 1)]
-    hull_cells = {(c, r) for c in range(-1, NCOLS + 1) for r in range(-1, NROWS + 1)} - outside
-
+    hull_cells = dilate8(all_cells)   # one ring of hull around the rooms, nothing else
     # exterior chamfer lines: interior diagonals pushed one cell outward
     ext_lines = []
     for seg in DIAG_WALLS:
@@ -805,7 +778,7 @@ def main(out_dir):
     core = set().union(*(ROOMS[n] for n in ("mess", "alcove_nw", "alcove_ne", "alcove_sw", "alcove_se",
                                              "bath_n", "bath_s", "mess_rw_link")))
     core |= {(42, 8), (43, 9), (42, 13), (43, 12)}
-    tier = dilate8(core)
+    tier = dilate8(core) & hull_cells
     for (c, r) in sorted(tier):
         for key, nb in neighbours4(c, r).items():
             if nb not in tier:
