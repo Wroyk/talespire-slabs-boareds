@@ -35,9 +35,7 @@ auf dem Dach und Umriss des zweiten Hüllenstockwerks, Kreise = Props, grüne K�
 
 - **Innenraum (y = 0):** Böden nach Raumtyp, Wände, Türen, Fenster, Möbel, Lichtleisten, Säulen, Schilder, Kameras.
 - **Decke (y = 2.0):** Schiffsdecke, über dem Taktikraum Glas, über der Krankenstation offen.
-- **Hülle (y = 0 bis 2.25):** Genau ein Zellring um die echten Räume (die Flächen, die im Plan mit schwarzen
-  Plus-Zeichen markiert sind, bleiben Außenraum), gebaut aus derselben Raumschiff-Wand wie innen, an jeder Schräge
-  45°-Stücke statt Treppen; der Ring selbst ist mit gekreuzten Wandstücken massiv gefüllt.
+- **Hülle:** Die Raumwände selbst sind die Außenhülle, genau wie im Deckplan; es gibt keinen zusätzlichen Ring.
 - **Dach:** flache Schiffsplatten, Glas über dem Taktikraum, Loch über der Explosion in der Krankenstation,
   Lüftungskanal als Kasten obenauf.
 - **Dachaufbauten (y = 2.25):** Lüfter, Rohrleitungen, Klimageräte, Luftauslässe, Träger, Antenne, Solarpaneele.
@@ -48,10 +46,10 @@ auf dem Dach und Umriss des zweiten Hüllenstockwerks, Kreise = Props, grüne K�
 
 | Datei | Inhalt | Assets |
 |---|---|---|
-| `grasshopper/grasshopper_full.slab.txt` | **Alles in einem** | 3324 |
+| `grasshopper/grasshopper_full.slab.txt` | **Alles in einem** | 2277 |
 | `grasshopper/grasshopper_A_interior.slab.txt` | Boden, Wände, Türen, Fenster, Props, Details, Lichter | 1202 |
 | `grasshopper/grasshopper_B_ceiling.slab.txt` | Decke (y = 2.0), Glasdecke Taktikraum | 601 |
-| `grasshopper/grasshopper_C_hull_roof_engines.slab.txt` | Hülle, Dachplatten, Aufbauten, 2. Stockwerk, Triebwerke | 1524 |
+| `grasshopper/grasshopper_C_hull_roof_engines.slab.txt` | Dachplatten, Aufbauten, 2. Stockwerk, Lüftungskanal, Triebwerke | 477 |
 | `grasshopper/grasshopper_layer_floor.slab.txt` | nur Boden | 366 |
 | `grasshopper/grasshopper_layer_walls_doors.slab.txt` | nur Wände, Türen, Fenster, Luken | 441 |
 | `grasshopper/grasshopper_layer_props.slab.txt` | nur Möbel | 157 |

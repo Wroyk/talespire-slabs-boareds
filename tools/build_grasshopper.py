@@ -636,11 +636,6 @@ def main(out_dir):
             if key == "wall" and (seg[0], seg[1]) in DIAG_WINDOWS:
                 key = "window"
             add(s_walls, key, cx - 0.5, 0, cz - WALL_T / 2, rot)   # tiles turn about their footprint centre
-        if not is_door:
-            for i in range(n + 1):
-                t = (i + 0.5) / (n + 1) * 1.3 - 0.15
-                cx, cz = x0 + (x1 - x0) * t + nx, z0 + (z1 - z0) * t + nz
-                add(s_hull, "hullwall", cx - 0.5, 0, cz - WALL_T / 2, rot)
 
     # corner pillars where two wall lines meet (clipped into the corner)
     pts = {}
@@ -678,7 +673,7 @@ def main(out_dir):
 
     # --- hull: one ring of cells around every room plus all enclosed voids (found by flooding
     # from outside), exterior hull walls, chamfered corners, solid filling, roof plating.
-    hull_cells = dilate8(all_cells)   # one ring of hull around the rooms, nothing else
+    hull_cells = set(all_cells)       # the room walls are the hull, exactly like the deck plan
     # exterior chamfer lines: interior diagonals pushed one cell outward
     ext_lines = []
     for seg in DIAG_WALLS:
