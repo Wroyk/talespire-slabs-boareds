@@ -20,42 +20,45 @@ auf dem Dach und Umriss des zweiten Hüllenstockwerks, Kreise = Props, grüne K�
 | 1 | Small Cargo Bay | Frachtraum mit Gummiboden, Kisten, Containern, Glasscherben, Vorraum zum Hauptkorridor |
 | 2 | Engine Room | Großer Maschinenraum mit totem Triebwerk, vier EMP-Speeren darin, Kerzen, Müll; Reaktornische mit Rohren |
 | 3 | Cryopod Room | Steuerbord-Halle mit vier Kryokapseln, Dutzende Kerzen, Trümmer |
-| 4 | Medical Bay | Krankenstation mit OP-Tisch, Trümmern, **aufgerissener Hülle** (Einstiegspunkt, kein Dach, kein Deckenstück), Leiche im EVA-Anzug davor; Plastik-Quarantäneschleuse zum Kryoraum |
-| – | Ventilation Tunnel | **Neu, nicht auf dem Deckplan:** Kriechtunnel von der Krankenstation entlang der Oberseite bis zum Beobachtungsraum, Luken an beiden Enden, Computerpanel (AIKO) in der Mitte |
+| 4 | Medical Bay | Krankenstation mit OP-Tisch und Trümmern; der gestrichelte Kreis des Plans ist das **Explosionsloch**: dort fehlen Boden, Decke und Dach, die Leiche im EVA-Anzug schwebt im Loch; Plastik-Quarantäneschleuse zum Kryoraum |
+| – | Ventilation Tunnel | **Nicht auf dem Deckplan:** Lüftungskanal als geschlossener Kasten **auf dem Dach** des oberen Korridors, von der Krankenstation bis über den Beobachtungsraum; Einstieg durch Luken in der Decke beider Räume, Computerpanel (AIKO) und Lichtleisten im Kanal |
 | 5 | Crew Quarters | Messe mit Konferenztisch, Kombüse, vier Kojen-Nischen, Vorhänge, Bodenluke, zwei Bäder (Dusche), kaputter Automat |
-| 6 | Main Corridor | Zentral- und Steuerbordkorridor mit Metallgitterboden, Lichtleisten, Kameras, Schotttüren |
+| 6 | Main Corridor | Zentralkorridor mit Metallgitterboden, Lichtleisten, Kameras, Schotttüren |
 | 7 | Maintenance Shaft | Verschlossener Raum am Südende des Korridors: Kabelstränge, Kanister, Tonnen, Kartons, Müll |
-| 8 | Empty Observation Room | Raum neben dem oberen Korridor, rundum Fensterwände, Müll und Trümmer, eigene Tür |
+| 8 | Empty Observation Room | Raum neben dem oberen Korridor, rundum Fensterwände, Müll und Trümmer, eigene Tür; daneben der schmale Schleusenstreifen mit zwei Luken |
 | 9 | Tactical Stations | Runder Raum mit Sechskanttisch, Stühlen, Apsis-Konsole, **Glasdecke** und Solarpaneelen daneben auf dem Dach |
 | 10 | Computer Room | Weißer Raum mit schrägen Ecken, Bildschirme an den Wänden, Konsolenreihe, Hauptkonsole |
 | 11 | Commander Bridge | Brücke mit Bug-Pilotenstation, zwei Konsolenbänken, Holo-Tisch, Luftschleusen |
-| – | Rettungskapsel-Bucht | Eigener Raum hinter dem Steuerbordkorridor mit vier Kapseln, Luken vom Korridor und Diagonal-Luke vom Maschinenraum |
+| – | Rettungskapsel-Bucht | Raum an der Steuerbord-Außenwand mit vier Kapseln (Luke zum Raum hin), offen zum Maschinen- und Generatorraum, Diagonal-Luke vom großen Maschinenraum |
 
 ### Aufbau
 
 - **Innenraum (y = 0):** Böden nach Raumtyp, Wände, Türen, Fenster, Möbel, Lichtleisten, Säulen, Schilder, Kameras.
 - **Decke (y = 2.0):** Schiffsdecke, über dem Taktikraum Glas, über der Krankenstation offen.
-- **Hülle (y = 0 bis 2.25):** Ein Zellring aus Hüllenwänden um alle Räume, an jeder Schräge 45°-Stücke statt Treppen;
+- **Hülle (y = 0 bis 2.25):** Ein Zellring um alle Räume aus abwechselnden Hüllenwand-Varianten, an jeder Schräge
+  45°-Stücke statt Treppen, unten eine Stützschürze („exterior lower support“), oben Kantenstützen („top support“);
   Zwischenräume sind mit Hüllenblöcken massiv gefüllt, damit beim Clipping keine leeren „Geister-Räume“ erscheinen.
-  Dach aus Schiffsmetallplatten, am Riss der Krankenstation offen.
+  Am Bug die zweiteilige Cockpit-Fensterfront aus dem Cockpit-Set.
+- **Dach:** geformte Außenplatten („external top 2x2 A/B“), an allen Außenkanten gewölbte Deckenstücke,
+  Glas über dem Taktikraum, Loch über der Explosion in der Krankenstation, Lüftungskanal als Kasten obenauf.
 - **Dachaufbauten (y = 2.25):** Lüfter, Rohrleitungen, Klimageräte, Luftauslässe, Träger, Antenne, Solarpaneele.
 - **Zweites Hüllenstockwerk (y = 2.25 bis 4.25):** Aufbau über dem Crew-Quartier mit Antenne und Solarpaneelen.
-- **Antrieb:** Drei Triebwerke mit Sockeln am Heck (Osten), Haupttriebwerk oben, zwei Bremsdüsen am Hangar.
+- **Antrieb:** Drei Triebwerke mit Sockeln an der Heckwand (Osten), Haupttriebwerk auf dem Dach der Kapsel-Bucht, zwei Bremsdüsen am Hangar.
 
 ### Dateien
 
 | Datei | Inhalt | Assets |
 |---|---|---|
-| `grasshopper/grasshopper_full.slab.txt` | **Alles in einem** | 3371 |
-| `grasshopper/grasshopper_A_interior.slab.txt` | Boden, Wände, Türen, Fenster, Props, Details, Lichter | 1374 |
-| `grasshopper/grasshopper_B_ceiling.slab.txt` | Decke (y = 2.0), Glasdecke Taktikraum | 736 |
-| `grasshopper/grasshopper_C_hull_roof_engines.slab.txt` | Hülle, Dachplatten, Aufbauten, 2. Stockwerk, Triebwerke | 1264 |
-| `grasshopper/grasshopper_layer_floor.slab.txt` | nur Boden | 459 |
-| `grasshopper/grasshopper_layer_walls_doors.slab.txt` | nur Wände, Türen, Fenster, Luken | 476 |
+| `grasshopper/grasshopper_full.slab.txt` | **Alles in einem** | 3740 |
+| `grasshopper/grasshopper_A_interior.slab.txt` | Boden, Wände, Türen, Fenster, Props, Details, Lichter | 1262 |
+| `grasshopper/grasshopper_B_ceiling.slab.txt` | Decke (y = 2.0), Glasdecke Taktikraum | 690 |
+| `grasshopper/grasshopper_C_hull_roof_engines.slab.txt` | Hülle, Dachplatten, Aufbauten, 2. Stockwerk, Triebwerke | 1791 |
+| `grasshopper/grasshopper_layer_floor.slab.txt` | nur Boden | 410 |
+| `grasshopper/grasshopper_layer_walls_doors.slab.txt` | nur Wände, Türen, Fenster, Luken | 445 |
 | `grasshopper/grasshopper_layer_props.slab.txt` | nur Möbel | 159 |
-| `grasshopper/grasshopper_layer_details_lights.slab.txt` | nur Lichtleisten, Säulen, Schilder, Bildschirme | 283 |
+| `grasshopper/grasshopper_layer_details_lights.slab.txt` | nur Lichtleisten, Säulen, Schilder, Bildschirme | 251 |
 
-Der volle Slab ist rund 13 KB komprimiert, TaleSpire erlaubt 30 KB.
+Der volle Slab ist rund 14 KB komprimiert, TaleSpire erlaubt 30 KB.
 
 ### Einfügen in TaleSpire
 
@@ -218,6 +221,19 @@ Das Layout (Räume als Zellmengen, Diagonalwände, Türen, Fenster, Props, Dacha
 | `gun` | Gun | `35026064-127b-414e-9a0d-eaaa7fc041b3` |
 | `shower` | shower residential | `ca43c33b-c94a-47fd-a241-90baf2aa88b6` |
 | `screenthick` | scifi_set_Screen thick 01 | `a959c3a6-a6bf-46c4-ab7f-ba6936e42a04` |
+| `hullvarA` | HullSideWall | `77017a39-cf6a-488d-a409-cc17880b8ada` |
+| `hullvarB` | HullSideWall | `c2f8a532-e9e9-49ce-acd2-51be2ca2f1dc` |
+| `hullvarC` | HullSideWall | `4a650ee6-b97e-4bc5-ae9c-2b2c852a86ab` |
+| `exttopA` | external top 2x2 A | `3389fc47-8b6b-496a-bda1-dbe67303ec49` |
+| `exttopB` | external top 2x2 B | `ec695e81-4ae5-4c7b-ab22-0a19f4dec132` |
+| `ceilcurved` | space ship ceiling 1x1 curved soft | `e7f8f9a7-17ae-462a-8b54-597509d2444f` |
+| `topsupA` | exterior 1x1 top support A | `4d26e0db-23d2-41ca-8130-701797833599` |
+| `topsupB` | exterior 1x1 top support B | `5d466139-329e-4014-9aba-67dd57e04085` |
+| `lowsupA` | exterior 1x1 lower support A | `f94b8d86-02d0-481c-b164-2ffafe1b5e18` |
+| `lowsupB` | exterior 1x1 lower support B | `d8e2fe6d-ab69-441f-979d-5af5e4b303e9` |
+| `extwallA` | external wall 2x2 unique wall A | `e8ff11e1-d229-43b7-8f9f-dfad32fc43b2` |
+| `cockpitlow` | cockpit 2x2 inner window lower | `d6396479-8783-42c8-97d2-2c87d51a7d03` |
+| `cockpitup` | Front 2x2 inner window upper | `8ea5c367-c01f-4f5a-8d4a-50b6c09c0ea3` |
 
 ---
 
