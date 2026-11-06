@@ -55,22 +55,14 @@ PER_ROW, STEP, ROW_GAP = 12, 5, 8
 def main(out_path):
     s = Slab()
     for i, (name, u) in enumerate(PIECES):
-        x = (i % PER_ROW) * STEP
-        z = (i // PER_ROW) * ROW_GAP
+        x = 2 + (i % PER_ROW) * STEP
+        z = 16 + (i // PER_ROW) * ROW_GAP                # rows go north; counters fit south of row 1
         s.add(u, x, 0, z, 0, name)                       # the piece, rotation 0
         s.add(FLOOR[1], x, 0, z + 3, 0, FLOOR[0])        # 1x1 reference tile 3 units north
-        for k in range(i % PER_ROW + 1):                  # number of glow tiles = column number
-            s.add(GLOW[1], x + 0.0, 0, z - 2 - k * 0, 0, GLOW[0]) if k == 0 else None
-        for k in range(1, (i % PER_ROW) + 1):             # unary counter south of the piece
+        for k in range(1, (i % PER_ROW) + 2):            # unary column counter south of the piece
             s.add(GLOW[1], x, 0, z - 1 - k, 0, GLOW[0])
-    # shift so nothing is negative
-    (lo, _, lz), _ = s.bounds()
-    t = Slab()
-    for u, lst in s.layouts.items():
-        for x, y, z, rot in lst:
-            t.add(u, x - lo, y, z - lz, rot * 15, s.names.get(u))
     with open(out_path, "w") as f:
-        f.write(t.encode() + "\n")
+        f.write(s.encode() + "\n")
     print("pieces:")
     for i, (name, u) in enumerate(PIECES):
         print(f"  row {i // PER_ROW + 1}, column {i % PER_ROW + 1:2d}: {name}")
