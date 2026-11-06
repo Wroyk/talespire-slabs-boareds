@@ -102,6 +102,11 @@ A = {
     "hullfloor1": ("0f1c53e1-ca89-4776-bdb7-b4acd726fbbf", "Hull01_floor1x1"),
     "hullfloor2": ("73b12504-0f23-4b3f-b814-50db20c004f0", "Hull01_floor2x2"),
     "hullwall": ("09f8bec6-263d-4e96-bef5-eba63f27a114", "space ship wall 1x1 basic"),  # same wall as inside
+    # shaped pieces verified with the calibration slab (footprint and rotation-0 orientation)
+    "ribbed": ("3d415700-51fd-443b-bc45-d0189e66f3c0", "space ship wall 2x2 ribbed"),      # 2 long along x
+    "window2": ("9a3fac1c-2df5-40e8-9d24-07c79970eee6", "space ship wall 2x2 window"),     # 2 long along x
+    "cornercurved": ("dddb8739-297a-49b2-a348-38fbd2add877", "space ship wall 1x1 corner curved"),  # arc bulges NE at rot 0
+    "ceilcurved": ("e7f8f9a7-17ae-462a-8b54-597509d2444f", "space ship ceiling 1x1 curved soft"),   # rounded NE corner at rot 0
     "window": ("6a8f68a5-1eb4-4311-b712-49fc6329d0de", "wall window 1x1"),
     "labwindow": ("ab754a73-69ae-4581-99f0-3d3c969ee8e7", "Lab wall with window 1x1"),
     "jet": ("c4958c89-46fd-4b6a-a042-008c1b4ba8d8", "Jet Engine"),
@@ -544,10 +549,12 @@ def main(out_dir):
 
     # --- walls from floor edges
     edges = {}  # ('h'|'v', col, row) -> kind
+    exterior = set()
     for (c, r) in floor:
         for key, nb in neighbours4(c, r).items():
             if nb not in all_cells:
                 edges[key] = "wall"
+                exterior.add(key)
     for key in PARTITIONS:
         edges[key] = "wall"
     for key, kind in DOORS.items():
@@ -598,14 +605,55 @@ def main(out_dir):
         else:             # runs along z, boundary at plan col c, cells rows r..r+length-1
             add(slab, asset, c - WALL_T / 2, y, wz(r + length), rot_z)
 
+    # rounded exterior corners: a convex corner cell whose two outside edges are plain walls gets a
+    # curved corner wall (arc bulging outward) instead of the two straight pieces; the roof gets a
+    # matching rounded cap. Rotation: NE 0, SE 90, SW 180, NW 270 (clockwise seen from above).
+    CORNERS = {"NE": ((0, -1), (1, 0), 0), "SE": ((0, 1), (1, 0), 90), "SW": ((0, 1), (-1, 0), 180), "NW": ((0, -1), (-1, 0), 270)}
+    round_cells = {}   # cell -> rot
+    for (c, r) in sorted(floor):
+        for name, ((dc1, dr1), (dc2, dr2), rot) in CORNERS.items():
+            n1, n2 = (c + dc1, r + dr1), (c + dc2, r + dr2)
+            if n1 in all_cells or n2 in all_cells:
+                continue
+            e1 = ("h", c, r) if dr1 < 0 else ("h", c, r + 1)
+            e2 = ("v", c, r) if dc2 < 0 else ("v", c + 1, r)
+            if edges.get(e1) != "wall" or edges.get(e2) != "wall" or e1 in WINDOW_EDGES or e2 in WINDOW_EDGES:
+                continue
+            if (c, r) in round_cells:
+                continue
+            edges[e1] = edges[e2] = "none"
+            round_cells[(c, r)] = rot
+            add(s_walls, "cornercurved", c, 0, wz(r + 1), rot)
+    # single-cell chamfers become rounded corners as well (the plan's round room, bridge, hall)
+    for seg in list(DIAG_WALLS):
+        (c0, r0), (c1, r1) = seg[0], seg[1]
+        if len(seg) > 2 or abs(c1 - c0) != 1 or abs(r1 - r0) != 1:
+            continue
+        cc, cr = min(c0, c1), min(r0, r1)
+        for (dc, dr), rot in {(-1, 1): 0, (-1, -1): 90, (1, -1): 180, (1, 1): 270}.items():
+            if (cc + dc, cr + dr) in floor:          # floor on the inside diagonal -> arc on the opposite corner
+                round_cells[(cc, cr)] = rot
+                add(s_walls, "cornercurved", cc, 0, wz(cr + 1), rot)
+                break
+    ROUNDED_DIAGS = {seg for seg in DIAG_WALLS if len(seg) == 2 and abs(seg[1][0] - seg[0][0]) == 1
+                     and abs(seg[1][1] - seg[0][1]) == 1}
+
     handled = set()
     for (axis, c, r), kind in sorted(edges.items()):
-        if (axis, c, r) in handled:
+        if (axis, c, r) in handled or kind == "none":
             continue
         asset = {"wall": "wall", "door": "door", "hatch": "hatch", "door2": "door2"}[kind]
         if kind == "wall" and (axis, c, r) in WINDOW_EDGES:
             asset = "labwindow" if (axis, c, r) in LAB_WINDOWS else "window"
         length = 1
+        if kind == "wall" and (axis, c, r) in exterior:   # pair exterior walls into 2-long shaped pieces
+            nxt = (axis, c + 1, r) if axis == "h" else (axis, c, r + 1)
+            if edges.get(nxt) == "wall" and nxt in exterior and nxt not in handled:
+                w1, w2 = (axis, c, r) in WINDOW_EDGES, nxt in WINDOW_EDGES
+                if w1 == w2 and not ((axis, c, r) in LAB_WINDOWS or nxt in LAB_WINDOWS):
+                    asset = "window2" if w1 else "ribbed"
+                    handled.add(nxt)
+                    length = 2
         if kind == "door2":  # pair the two halves of a double door
             nxt = (axis, c + 1, r) if axis == "h" else (axis, c, r + 1)
             if edges.get(nxt) == "door2" and nxt not in handled:
@@ -617,6 +665,8 @@ def main(out_dir):
 
     # diagonal walls (interior) + matching exterior hull diagonals one cell further out
     for seg in DIAG_WALLS:
+        if seg in ROUNDED_DIAGS:
+            continue
         (c0, r0), (c1, r1) = seg[0], seg[1]
         is_door = len(seg) > 2 and seg[2] == "door"
         x0, z0, x1, z1 = c0, wz(r0), c1, wz(r1)
@@ -639,13 +689,16 @@ def main(out_dir):
 
     # corner pillars where two wall lines meet (clipped into the corner)
     pts = {}
-    for (axis, c, r) in edges:
+    for (axis, c, r), kind in edges.items():
+        if kind == "none":
+            continue
         a, b = ((c, r), (c + 1, r)) if axis == "h" else ((c, r), (c, r + 1))
         for p_ in (a, b):
             pts.setdefault(p_, set()).add(axis)
     for (c, r), axes in sorted(pts.items()):
         if len(axes) == 2 and any(nb in floor for nb in ((c, r), (c - 1, r), (c, r - 1), (c - 1, r - 1))):
             add(s_detail, "pillar", c, 0, wz(r), 0)
+    # (edges set to "none" above were not placed, so no pillar is generated at rounded corners)
 
     # light strips along corridor walls, pushed slightly into the wall
     for name in LIT_ROOMS:
@@ -720,7 +773,9 @@ def main(out_dir):
         add(s_hull, "hullwall", c, 0, wz(r + 1) + 0.5 - WALL_T / 2, rot_x)
         add(s_hull, "hullwall", c + 0.5 - WALL_T / 2, 0, wz(r + 1), rot_z)
     roof_cells = hull_cells - BREACH_CELLS
-    plate(s_hull, roof_cells - skylight - DUCT_HATCHES, ROOF_Y, lambda cell: ("floor1", "floor2"))
+    for (c, r), rot in sorted(round_cells.items()):
+        add(s_hull, "ceilcurved", c, ROOF_Y, wz(r + 1), rot)
+    plate(s_hull, roof_cells - skylight - DUCT_HATCHES - set(round_cells), ROOF_Y, lambda cell: ("floor1", "floor2"))
     plate(s_hull, skylight, ROOF_Y, lambda cell: ("glass1", "glass2"))
     for (c, r) in sorted(DUCT_HATCHES):
         add(s_hull, "hatchfloor", c, ROOF_Y, wz(r + 1), 0)
@@ -781,7 +836,7 @@ def main(out_dir):
         print(f"{name:45s} assets={n:5d} kinds={k:3d} chars={ln}")
     lo, hi = full.bounds()
     print("bounds", lo, hi)
-    return floor, DIAG_CELLS, edges, DIAG_WALLS, ring, tier
+    return floor, DIAG_CELLS, edges, DIAG_WALLS, ring, tier, round_cells
 
 
 if __name__ == "__main__":

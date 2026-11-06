@@ -9,7 +9,7 @@ import build_grasshopper as bg  # noqa: E402
 
 
 def render(out_png, plan_png=None, X0=117.0, Y0=164.0, P=59.1):
-    floor, diag, edges, diag_walls, ring, tier = bg.main(os.path.join(os.path.dirname(__file__), "..", "grasshopper"))
+    floor, diag, edges, diag_walls, ring, tier, round_cells = bg.main(os.path.join(os.path.dirname(__file__), "..", "grasshopper"))
     if plan_png:
         im = Image.open(plan_png).convert("RGBA")
     else:
@@ -30,7 +30,15 @@ def render(out_png, plan_png=None, X0=117.0, Y0=164.0, P=59.1):
     for (c, r) in diag:
         d.rectangle([px(c, r), px(c + 1, r + 1)], fill=(255, 200, 0, 90))
     colors = {"wall": (220, 0, 0, 230), "door": (0, 170, 0, 230), "door2": (0, 170, 0, 230), "hatch": (170, 0, 170, 230)}
+    for (c, r), rot in round_cells.items():
+        cx, cy = {0: (c, r + 1), 90: (c, r), 180: (c + 1, r), 270: (c + 1, r + 1)}[rot]
+        start = {0: 270, 90: 0, 180: 90, 270: 180}[rot]
+        x0, y0 = px(cx - 1, cy - 1)
+        x1, y1 = px(cx + 1, cy + 1)
+        d.arc([x0, y0, x1, y1], start=start, end=start + 90, fill=(220, 0, 0, 230), width=6)
     for (axis, c, r), kind in edges.items():
+        if kind == "none":
+            continue
         col = colors[kind]
         w = 6 if kind == "wall" else 10
         if axis == "h":

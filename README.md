@@ -35,8 +35,11 @@ auf dem Dach und Umriss des zweiten Hüllenstockwerks, Kreise = Props, grüne K�
 
 - **Innenraum (y = 0):** Böden nach Raumtyp, Wände, Türen, Fenster, Möbel, Lichtleisten, Säulen, Schilder, Kameras.
 - **Decke (y = 2.0):** Schiffsdecke, über dem Taktikraum Glas, über der Krankenstation offen.
-- **Hülle:** Die Raumwände selbst sind die Außenhülle, genau wie im Deckplan; es gibt keinen zusätzlichen Ring.
-- **Dach:** flache Schiffsplatten, Glas über dem Taktikraum, Loch über der Explosion in der Krankenstation,
+- **Hülle:** Die Raumwände selbst sind die Außenhülle, genau wie im Deckplan. Gerade Außenseiten bestehen aus
+  2x2-Wänden („space ship wall 2x2 ribbed“, mit Fenstern „2x2 window“), jede Außenecke und jede einzellige Schräge
+  (Taktikraum, Brücke, Steuerbord-Halle) ist eine gewölbte Eckwand („wall 1x1 corner curved“); nur Innenwände,
+  Reststücke und die zweizelligen Schrägen sind gerade 1x1-Wände.
+- **Dach:** flache Schiffsplatten mit gewölbten Kappen über allen runden Ecken, Glas über dem Taktikraum, Loch über der Explosion in der Krankenstation,
   Lüftungskanal als Kasten obenauf.
 - **Dachaufbauten (y = 2.25):** Lüfter, Rohrleitungen, Klimageräte, Luftauslässe, Träger, Antenne, Solarpaneele.
 - **Zweites Hüllenstockwerk (y = 2.25 bis 4.25):** Aufbau über dem Crew-Quartier mit Antenne und Solarpaneelen.
@@ -46,14 +49,14 @@ auf dem Dach und Umriss des zweiten Hüllenstockwerks, Kreise = Props, grüne K�
 
 | Datei | Inhalt | Assets |
 |---|---|---|
-| `grasshopper/grasshopper_full.slab.txt` | **Alles in einem** | 2277 |
-| `grasshopper/grasshopper_A_interior.slab.txt` | Boden, Wände, Türen, Fenster, Props, Details, Lichter | 1202 |
+| `grasshopper/grasshopper_full.slab.txt` | **Alles in einem** | 2123 |
+| `grasshopper/grasshopper_A_interior.slab.txt` | Boden, Wände, Türen, Fenster, Props, Details, Lichter | 1012 |
 | `grasshopper/grasshopper_B_ceiling.slab.txt` | Decke (y = 2.0), Glasdecke Taktikraum | 601 |
-| `grasshopper/grasshopper_C_hull_roof_engines.slab.txt` | Dachplatten, Aufbauten, 2. Stockwerk, Lüftungskanal, Triebwerke | 477 |
+| `grasshopper/grasshopper_C_hull_roof_engines.slab.txt` | Dachplatten, Aufbauten, 2. Stockwerk, Lüftungskanal, Triebwerke | 513 |
 | `grasshopper/grasshopper_layer_floor.slab.txt` | nur Boden | 366 |
-| `grasshopper/grasshopper_layer_walls_doors.slab.txt` | nur Wände, Türen, Fenster, Luken | 441 |
+| `grasshopper/grasshopper_layer_walls_doors.slab.txt` | nur Wände, Türen, Fenster, Luken | 287 |
 | `grasshopper/grasshopper_layer_props.slab.txt` | nur Möbel | 157 |
-| `grasshopper/grasshopper_layer_details_lights.slab.txt` | nur Lichtleisten, Säulen, Schilder, Bildschirme | 241 |
+| `grasshopper/grasshopper_layer_details_lights.slab.txt` | nur Lichtleisten, Säulen, Schilder, Bildschirme | 205 |
 
 Der volle Slab ist rund 14 KB komprimiert, TaleSpire erlaubt 30 KB.
 
@@ -155,6 +158,10 @@ Das Layout (Räume als Zellmengen, Diagonalwände, Türen, Fenster, Props, Dacha
 | `hullfloor1` | Hull01_floor1x1 | `0f1c53e1-ca89-4776-bdb7-b4acd726fbbf` |
 | `hullfloor2` | Hull01_floor2x2 | `73b12504-0f23-4b3f-b814-50db20c004f0` |
 | `hullwall` | space ship wall 1x1 basic | `09f8bec6-263d-4e96-bef5-eba63f27a114` |
+| `ribbed` | space ship wall 2x2 ribbed | `3d415700-51fd-443b-bc45-d0189e66f3c0` |
+| `window2` | space ship wall 2x2 window | `9a3fac1c-2df5-40e8-9d24-07c79970eee6` |
+| `cornercurved` | space ship wall 1x1 corner curved | `dddb8739-297a-49b2-a348-38fbd2add877` |
+| `ceilcurved` | space ship ceiling 1x1 curved soft | `e7f8f9a7-17ae-462a-8b54-597509d2444f` |
 | `window` | wall window 1x1 | `6a8f68a5-1eb4-4311-b712-49fc6329d0de` |
 | `labwindow` | Lab wall with window 1x1 | `ab754a73-69ae-4581-99f0-3d3c969ee8e7` |
 | `jet` | Jet Engine | `c4958c89-46fd-4b6a-a042-008c1b4ba8d8` |
