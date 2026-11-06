@@ -101,7 +101,7 @@ A = {
     # hull / exterior
     "hullfloor1": ("0f1c53e1-ca89-4776-bdb7-b4acd726fbbf", "Hull01_floor1x1"),
     "hullfloor2": ("73b12504-0f23-4b3f-b814-50db20c004f0", "Hull01_floor2x2"),
-    "hullwall": ("1577ee9a-c50d-490c-8604-8b3194e42131", "Hull_Sidewall_center_1x1"),
+    "hullwall": ("09f8bec6-263d-4e96-bef5-eba63f27a114", "space ship wall 1x1 basic"),  # same wall as inside
     "window": ("6a8f68a5-1eb4-4311-b712-49fc6329d0de", "wall window 1x1"),
     "labwindow": ("ab754a73-69ae-4581-99f0-3d3c969ee8e7", "Lab wall with window 1x1"),
     "jet": ("c4958c89-46fd-4b6a-a042-008c1b4ba8d8", "Jet Engine"),
@@ -167,20 +167,6 @@ A = {
     "gun": ("35026064-127b-414e-9a0d-eaaa7fc041b3", "Gun"),
     "shower": ("ca43c33b-c94a-47fd-a241-90baf2aa88b6", "shower residential"),
     "screenthick": ("a959c3a6-a6bf-46c4-ab7f-ba6936e42a04", "scifi_set_Screen thick 01"),
-    # shaped exterior (cockpit / hull sets)
-    "hullvarA": ("77017a39-cf6a-488d-a409-cc17880b8ada", "HullSideWall"),
-    "hullvarB": ("c2f8a532-e9e9-49ce-acd2-51be2ca2f1dc", "HullSideWall"),
-    "hullvarC": ("4a650ee6-b97e-4bc5-ae9c-2b2c852a86ab", "HullSideWall"),
-    "exttopA": ("3389fc47-8b6b-496a-bda1-dbe67303ec49", "external top 2x2 A"),
-    "exttopB": ("ec695e81-4ae5-4c7b-ab22-0a19f4dec132", "external top 2x2 B"),
-    "ceilcurved": ("e7f8f9a7-17ae-462a-8b54-597509d2444f", "space ship ceiling 1x1 curved soft"),
-    "topsupA": ("4d26e0db-23d2-41ca-8130-701797833599", "exterior 1x1 top support A"),
-    "topsupB": ("5d466139-329e-4014-9aba-67dd57e04085", "exterior 1x1 top support B"),
-    "lowsupA": ("f94b8d86-02d0-481c-b164-2ffafe1b5e18", "exterior 1x1 lower support A"),
-    "lowsupB": ("d8e2fe6d-ab69-441f-979d-5af5e4b303e9", "exterior 1x1 lower support B"),
-    "extwallA": ("e8ff11e1-d229-43b7-8f9f-dfad32fc43b2", "external wall 2x2 unique wall A"),
-    "cockpitlow": ("d6396479-8783-42c8-97d2-2c87d51a7d03", "cockpit 2x2 inner window lower"),
-    "cockpitup": ("8ea5c367-c01f-4f5a-8d4a-50b6c09c0ea3", "Front 2x2 inner window upper"),
 }
 
 # ----------------------------------------------------------------------------- LAYOUT
@@ -438,8 +424,7 @@ LIT_ROOMS = GLOW_CORRIDORS + ("corr_central", "hex_south", "hex_east", "bridge_l
 # room, entered through hatches in those rooms' ceilings
 DUCT_CELLS = rect(23, 3, 46, 3) | {(23, 4)}
 DUCT_HATCHES = {(46, 3), (23, 4)}
-# bow: the nose's west wall is the two-part cockpit window front instead of plain window walls
-COCKPIT_EDGES = {("v", 1, 10), ("v", 1, 11)}
+COCKPIT_EDGES = set()
 
 # Wall edges that become windows instead of plain walls
 WINDOW_EDGES = {
@@ -613,9 +598,7 @@ def main(out_dir):
         else:             # runs along z, boundary at plan col c, cells rows r..r+length-1
             add(slab, asset, c - WALL_T / 2, y, wz(r + length), rot_z)
 
-    handled = set(COCKPIT_EDGES)
-    place_edge(s_walls, "cockpitlow", "v", 1, 10, length=2)
-    place_edge(s_walls, "cockpitup", "v", 1, 10, length=2, y=1.0)
+    handled = set()
     for (axis, c, r), kind in sorted(edges.items()):
         if (axis, c, r) in handled:
             continue
@@ -736,33 +719,13 @@ def main(out_dir):
             mz = wz(er) - (0.5 if axis == "v" else 0)
             if beyond(mx, mz, -0.45) is not None:   # covered by the chamfer piece
                 continue
-            variant = ("hullwall", "hullvarA", "hullwall", "hullvarB", "hullwall", "hullvarC")[(c + 2 * r) % 6]
-            place_edge(s_hull, variant, *key)
-            # shaped edge pieces: a support rail on top of the hull edge and a skirt at the bottom
-            ox, oz = nb[0] - c, -(nb[1] - r)        # outward direction in world x/z
-            sup = ("topsupA", "topsupB")[(c + r) % 2]
-            low = ("lowsupA", "lowsupB")[(c + r) % 2]
-            if axis == "h":
-                add(s_hull, sup, c, ROOF_Y, wz(er) - WALL_T / 2 + 0.25 * oz, rot_x)
-                add(s_hull, low, c, 0, wz(er) - WALL_T / 2 + 0.5 * oz, rot_x)
-            else:
-                add(s_hull, sup, ec - WALL_T / 2 + 0.25 * ox, ROOF_Y, wz(er + 1), rot_z)
-                add(s_hull, low, ec - WALL_T / 2 + 0.5 * ox, 0, wz(er + 1), rot_z)
-        add(s_hull, "hullfloor1", c, 0, wz(r + 1), 0)
+            place_edge(s_hull, "hullwall", *key)
+        add(s_hull, "floor1", c, 0, wz(r + 1), 0)
         # fill the between-hull space with crossed hull blocks so it reads as solid structure
         add(s_hull, "hullwall", c, 0, wz(r + 1) + 0.5 - WALL_T / 2, rot_x)
         add(s_hull, "hullwall", c + 0.5 - WALL_T / 2, 0, wz(r + 1), rot_z)
     roof_cells = hull_cells - BREACH_CELLS
-    curved = {}
-    for (c, r) in ring:
-        outs = [(nb[0] - c, nb[1] - r) for key, nb in neighbours4(c, r).items() if nb not in hull_cells]
-        if len(outs) == 1:
-            dc, dr = outs[0]
-            curved[(c, r)] = {(0, -1): FACE["N"], (0, 1): FACE["S"], (1, 0): FACE["E"], (-1, 0): FACE["W"]}[(dc, dr)]
-    for (c, r), rot in sorted(curved.items()):
-        add(s_hull, "ceilcurved", c, ROOF_Y, wz(r + 1), rot)
-    plate(s_hull, roof_cells - skylight - DUCT_HATCHES - set(curved), ROOF_Y,
-          lambda cell: ("floor1", "exttopA" if (cell[0] // 2 + cell[1] // 2) % 2 == 0 else "exttopB"))
+    plate(s_hull, roof_cells - skylight - DUCT_HATCHES, ROOF_Y, lambda cell: ("floor1", "floor2"))
     plate(s_hull, skylight, ROOF_Y, lambda cell: ("glass1", "glass2"))
     for (c, r) in sorted(DUCT_HATCHES):
         add(s_hull, "hatchfloor", c, ROOF_Y, wz(r + 1), 0)
@@ -783,7 +746,7 @@ def main(out_dir):
         for key, nb in neighbours4(c, r).items():
             if nb not in tier:
                 place_edge(s_hull, "hullwall", *key, y=ROOF_Y)
-    plate(s_hull, tier, ROOF_Y + TIER2_H, lambda cell: ("hullfloor1", "hullfloor2"))
+    plate(s_hull, tier, ROOF_Y + TIER2_H, lambda cell: ("floor1", "floor2"))
 
     # --- write
     os.makedirs(out_dir, exist_ok=True)

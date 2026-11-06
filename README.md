@@ -35,12 +35,11 @@ auf dem Dach und Umriss des zweiten Hüllenstockwerks, Kreise = Props, grüne K�
 
 - **Innenraum (y = 0):** Böden nach Raumtyp, Wände, Türen, Fenster, Möbel, Lichtleisten, Säulen, Schilder, Kameras.
 - **Decke (y = 2.0):** Schiffsdecke, über dem Taktikraum Glas, über der Krankenstation offen.
-- **Hülle (y = 0 bis 2.25):** Ein Zellring um alle Räume aus abwechselnden Hüllenwand-Varianten, an jeder Schräge
-  45°-Stücke statt Treppen, unten eine Stützschürze („exterior lower support“), oben Kantenstützen („top support“);
-  Zwischenräume sind mit Hüllenblöcken massiv gefüllt, damit beim Clipping keine leeren „Geister-Räume“ erscheinen.
-  Am Bug die zweiteilige Cockpit-Fensterfront aus dem Cockpit-Set.
-- **Dach:** geformte Außenplatten („external top 2x2 A/B“), an allen Außenkanten gewölbte Deckenstücke,
-  Glas über dem Taktikraum, Loch über der Explosion in der Krankenstation, Lüftungskanal als Kasten obenauf.
+- **Hülle (y = 0 bis 2.25):** Genau ein Zellring um die echten Räume (die Flächen, die im Plan mit schwarzen
+  Plus-Zeichen markiert sind, bleiben Außenraum), gebaut aus derselben Raumschiff-Wand wie innen, an jeder Schräge
+  45°-Stücke statt Treppen; der Ring selbst ist mit gekreuzten Wandstücken massiv gefüllt.
+- **Dach:** flache Schiffsplatten, Glas über dem Taktikraum, Loch über der Explosion in der Krankenstation,
+  Lüftungskanal als Kasten obenauf.
 - **Dachaufbauten (y = 2.25):** Lüfter, Rohrleitungen, Klimageräte, Luftauslässe, Träger, Antenne, Solarpaneele.
 - **Zweites Hüllenstockwerk (y = 2.25 bis 4.25):** Aufbau über dem Crew-Quartier mit Antenne und Solarpaneelen.
 - **Antrieb:** Drei Triebwerke mit Sockeln an der Heckwand (Osten), Haupttriebwerk auf dem Dach der Kapsel-Bucht, zwei Bremsdüsen am Hangar.
@@ -49,10 +48,10 @@ auf dem Dach und Umriss des zweiten Hüllenstockwerks, Kreise = Props, grüne K�
 
 | Datei | Inhalt | Assets |
 |---|---|---|
-| `grasshopper/grasshopper_full.slab.txt` | **Alles in einem** | 3801 |
+| `grasshopper/grasshopper_full.slab.txt` | **Alles in einem** | 3324 |
 | `grasshopper/grasshopper_A_interior.slab.txt` | Boden, Wände, Türen, Fenster, Props, Details, Lichter | 1202 |
 | `grasshopper/grasshopper_B_ceiling.slab.txt` | Decke (y = 2.0), Glasdecke Taktikraum | 601 |
-| `grasshopper/grasshopper_C_hull_roof_engines.slab.txt` | Hülle, Dachplatten, Aufbauten, 2. Stockwerk, Triebwerke | 2001 |
+| `grasshopper/grasshopper_C_hull_roof_engines.slab.txt` | Hülle, Dachplatten, Aufbauten, 2. Stockwerk, Triebwerke | 1524 |
 | `grasshopper/grasshopper_layer_floor.slab.txt` | nur Boden | 366 |
 | `grasshopper/grasshopper_layer_walls_doors.slab.txt` | nur Wände, Türen, Fenster, Luken | 441 |
 | `grasshopper/grasshopper_layer_props.slab.txt` | nur Möbel | 157 |
@@ -157,7 +156,7 @@ Das Layout (Räume als Zellmengen, Diagonalwände, Türen, Fenster, Props, Dacha
 | `floor_strip` | stripped floor 1x1 | `5ea4bd5a-8b0b-484b-b5a4-0bca761ae0fd` |
 | `hullfloor1` | Hull01_floor1x1 | `0f1c53e1-ca89-4776-bdb7-b4acd726fbbf` |
 | `hullfloor2` | Hull01_floor2x2 | `73b12504-0f23-4b3f-b814-50db20c004f0` |
-| `hullwall` | Hull_Sidewall_center_1x1 | `1577ee9a-c50d-490c-8604-8b3194e42131` |
+| `hullwall` | space ship wall 1x1 basic | `09f8bec6-263d-4e96-bef5-eba63f27a114` |
 | `window` | wall window 1x1 | `6a8f68a5-1eb4-4311-b712-49fc6329d0de` |
 | `labwindow` | Lab wall with window 1x1 | `ab754a73-69ae-4581-99f0-3d3c969ee8e7` |
 | `jet` | Jet Engine | `c4958c89-46fd-4b6a-a042-008c1b4ba8d8` |
@@ -221,19 +220,6 @@ Das Layout (Räume als Zellmengen, Diagonalwände, Türen, Fenster, Props, Dacha
 | `gun` | Gun | `35026064-127b-414e-9a0d-eaaa7fc041b3` |
 | `shower` | shower residential | `ca43c33b-c94a-47fd-a241-90baf2aa88b6` |
 | `screenthick` | scifi_set_Screen thick 01 | `a959c3a6-a6bf-46c4-ab7f-ba6936e42a04` |
-| `hullvarA` | HullSideWall | `77017a39-cf6a-488d-a409-cc17880b8ada` |
-| `hullvarB` | HullSideWall | `c2f8a532-e9e9-49ce-acd2-51be2ca2f1dc` |
-| `hullvarC` | HullSideWall | `4a650ee6-b97e-4bc5-ae9c-2b2c852a86ab` |
-| `exttopA` | external top 2x2 A | `3389fc47-8b6b-496a-bda1-dbe67303ec49` |
-| `exttopB` | external top 2x2 B | `ec695e81-4ae5-4c7b-ab22-0a19f4dec132` |
-| `ceilcurved` | space ship ceiling 1x1 curved soft | `e7f8f9a7-17ae-462a-8b54-597509d2444f` |
-| `topsupA` | exterior 1x1 top support A | `4d26e0db-23d2-41ca-8130-701797833599` |
-| `topsupB` | exterior 1x1 top support B | `5d466139-329e-4014-9aba-67dd57e04085` |
-| `lowsupA` | exterior 1x1 lower support A | `f94b8d86-02d0-481c-b164-2ffafe1b5e18` |
-| `lowsupB` | exterior 1x1 lower support B | `d8e2fe6d-ab69-441f-979d-5af5e4b303e9` |
-| `extwallA` | external wall 2x2 unique wall A | `e8ff11e1-d229-43b7-8f9f-dfad32fc43b2` |
-| `cockpitlow` | cockpit 2x2 inner window lower | `d6396479-8783-42c8-97d2-2c87d51a7d03` |
-| `cockpitup` | Front 2x2 inner window upper | `8ea5c367-c01f-4f5a-8d4a-50b6c09c0ea3` |
 
 ---
 
