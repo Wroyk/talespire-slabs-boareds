@@ -2,47 +2,63 @@
 
 ## Grasshopper – begehbares Raumschiff (Death in Space Deckplan)
 
-Der komplette Deckplan der **Grasshopper** (aus *Death in Space*, Vorlage: `Grasshopper-PrinterFriendly-A3.pdf`)
-als TaleSpire-Slab, 1 Planquadrat = 1 TaleSpire-Einheit, 53 × 36 Felder. Alle Räume sind begehbar,
-Türen sitzen an den Stellen des Plans, die Möbel sind als Props gesetzt, und es gibt eine separate
-Deckenebene, die man mit TaleSpires Höhen-Clipping (Hide Volumes / Clipping-Ebene für GM und Spieler) ein- und
-ausblenden kann.
+Die **Grasshopper** aus *Death in Space* (Vorlage: `Grasshopper-PrinterFriendly-A3.pdf`) als komplettes,
+begehbares Raumschiff für TaleSpire: 1 Planquadrat = 1 TaleSpire-Einheit, 53 × 36 Felder Innenraum, dazu Hülle,
+Dach, Aufbauten und Triebwerke. Alles ist in Ebenen aufgeteilt, sodass man mit TaleSpires Höhen-Clipping
+(Hide Volumes / Clipping-Ebene für GM und Spieler) durch Dach und Decke in die Räume schneiden kann.
 
 ![Layout](grasshopper/grasshopper_layout.png)
+
+*Blau = Innenraum, grau = Hülle, rot = Wände, grün = Türen, lila = Luken, gelb = Diagonalzellen, orange = Aufbauten
+auf dem Dach und Umriss des zweiten Hüllenstockwerks, Kreise = Props, grüne Kästchen = Wand-Details.*
+
+### Was gebaut ist
+
+- **Innenraum (y = 0):** 30 Räume nach Plan – Brücke mit Bug-Pilotenstation, gebogenen Konsolenbänken und
+  Holo-Tisch, zwei Luftschleusen mit Außenluken, runder Beobachtungsraum mit Sechskanttisch und Fensterwänden,
+  Maschinenraum, Lager, Wandschrank-Gang, Korridore mit Schotttüren, Messe mit Konferenztisch, Kombüse,
+  Krankenecke, vier Kojen-Nischen und zwei Bädern, Steuerbord-Halle mit Kryo-Kapseln, Liftplattform,
+  Reaktorraum mit Rohren, Frachtraum voller Kisten, Hydroponik, Hangar mit Bodenluftschleuse, Generatorraum,
+  Rettungskapsel-Bucht mit vier Kapseln und Luken.
+- **Böden nach Raumtyp:** Korridore mit Panelboden und leuchtenden Streifen, Fracht/Hangar/Lager mit
+  Industrieboden, Maschinenräume mit Gummiboden, Reaktor und Schleusen mit Metallplatten.
+- **Details (in die Wände geclippt):** Lichtleisten an allen Korridorwänden, Säulen an jeder Wandecke,
+  Bildschirme, Sicherheitsmonitore, Kameras, Warnschilder an den Schleusen und Kapselluken, Wandlampen,
+  Kabelstränge unter der Decke, Waffenständer.
+- **Decke (y = 2.0):** Schiffsdecke über allen Räumen.
+- **Hülle (y = 0 bis 2.25):** ein Zellring aus Hüllenwänden rund um das Deck, der auch die Hohlräume zwischen den
+  Räumen schließt, Diagonalstücke an allen Chamfern, Hüllenplatten als Dach über dem ganzen Schiff.
+- **Dachaufbauten (y = 2.25):** Lüfter, Rohrleitungen entlang der Korridore, Klimageräte, Luftauslässe,
+  Stützträger, Antenne, Solarpaneele.
+- **Zweites Hüllenstockwerk (y = 2.25 bis 4.25):** Aufbau über dem Messe-Block mit eigener Plattierung, Antenne
+  und Solarpaneelen.
+- **Antrieb:** drei Triebwerke mit Sockeln am Heck (Osten), Haupttriebwerk oben, acht Manövrierdüsen an Bug,
+  Schleusen und Hangar.
 
 ### Dateien
 
 | Datei | Inhalt | Assets |
 |---|---|---|
-| `grasshopper/grasshopper_full.slab.txt` | **Alles** (Boden, Wände, Türen, Props, Decke) | 1515 |
-| `grasshopper/grasshopper_no_ceiling.slab.txt` | Boden + Wände + Türen + Props, ohne Decke | 818 |
-| `grasshopper/grasshopper_layer1_floor.slab.txt` | nur Boden | 240 |
-| `grasshopper/grasshopper_layer2_walls_doors.slab.txt` | nur Wände, Türen, Luken | 459 |
-| `grasshopper/grasshopper_layer3_props.slab.txt` | nur Möbel/Props | 121 |
-| `grasshopper/grasshopper_layer4_ceiling.slab.txt` | nur Decke (auf Höhe 2.0) | 699 |
+| `grasshopper/grasshopper_full.slab.txt` | **Alles in einem** | 3116 |
+| `grasshopper/grasshopper_A_interior.slab.txt` | Boden, Wände, Türen, Fenster, Props, Details, Lichter | 1211 |
+| `grasshopper/grasshopper_B_ceiling.slab.txt` | Decke (y = 2.0) | 699 |
+| `grasshopper/grasshopper_C_hull_roof_engines.slab.txt` | Hülle, Dachplatten, Aufbauten, 2. Stockwerk, Triebwerke | 1209 |
+| `grasshopper/grasshopper_layer_floor.slab.txt` | nur Boden | 381 |
+| `grasshopper/grasshopper_layer_walls_doors.slab.txt` | nur Wände, Türen, Fenster, Luken | 459 |
+| `grasshopper/grasshopper_layer_props.slab.txt` | nur Möbel | 121 |
+| `grasshopper/grasshopper_layer_details_lights.slab.txt` | nur Lichtleisten, Säulen, Schilder, Bildschirme | 253 |
 
-Alle Slabs liegen weit unter dem TaleSpire-Limit von 30 KB (komprimiert); der volle Slab hat rund 7 KB Text.
+Der volle Slab ist rund 11 KB komprimiert, TaleSpire erlaubt 30 KB.
 
 ### Einfügen in TaleSpire
 
-1. Den kompletten Inhalt einer `.slab.txt` kopieren (inklusive der ``` am Anfang und Ende, TaleSpire akzeptiert beides).
-2. In TaleSpire im Baumodus **Strg+V** drücken, Slab platzieren, mit Klick bestätigen.
-3. Empfohlen: zuerst `grasshopper_no_ceiling`, dann `grasshopper_layer4_ceiling` **an derselben Cursorposition und Höhe**
-   einfügen. Jeder Teil-Slab enthält dazu eine einzelne „Anker“-Bodenkachel an der gemeinsamen Südwest-Ecke
-   (links unten außerhalb des Schiffs), damit alle Ebenen exakt übereinander landen. Die Ankerkachel danach löschen.
-4. Decke ausblenden: in TaleSpire die Clipping-Höhe (Mausrad + Taste für Höhenschnitt, bzw. Hide Volumes) knapp
-   unter 2.0 setzen, dann sieht man von oben in die Räume.
-
-### Räume (Planbezeichnung → Slab)
-
-Brücke mit Bug-Pilotenstation, zwei gebogenen Konsolenbänken und Holo-Tisch, Nord- und Süd-Luftschleuse mit
-Außenluken; runder Beobachtungs-/Besprechungsraum mit Sechskanttisch und Apsis-Konsole; Maschinenraum darunter
-(Spinde, Konsolenreihe, Diagonalkonsole); Lager mit Bänken; Wandschrank-Gang; oberer Korridor mit Bogenfenster;
-Zentralkorridor mit Schotttür; Messe mit Konferenztisch, vier Kojen-Nischen und zwei Bädern; Steuerbord-Halle mit
-vier Kryo-Kapseln; oberer Steuerbord-Block mit Liftplattform (leuchtender Boden) und Terminal; Maschinen-/Reaktorraum
-mit Rohrleitungen; Frachtraum mit Kisten und Vorraum; Hydroponik mit Pflanzen; Hangar-Trichter mit Bodenluftschleuse;
-unterer Raum mit Diagonal-Luke zum Generatorraum; Steuerbord-Korridor mit vier Rettungskapseln (außen am Rumpf,
-Luken in der Wand).
+1. Den kompletten Inhalt einer `.slab.txt` kopieren (die ``` am Anfang und Ende dürfen mit).
+2. In TaleSpire im Baumodus **Strg+V**, Slab platzieren, bestätigen.
+3. Entweder `grasshopper_full` in einem Stück, oder nacheinander **A → B → C an derselben Cursorposition und
+   Höhe**. Jeder Teil-Slab enthält eine „Anker“-Bodenkachel an der gemeinsamen Südwest-Ecke (links unten außerhalb
+   des Schiffs), damit alle Ebenen exakt übereinander landen. Die Ankerkachel danach löschen.
+4. Spielen: Clipping-Höhe auf knapp unter 2.0 setzen, dann sieht man von oben in die Räume; auf 4.5 für das ganze
+   Schiff von außen.
 
 ### Annahmen und Stellschrauben
 
@@ -52,23 +68,23 @@ genauen Modellmaße einzelner Assets. Dafür gibt es im Generator `tools/build_g
 
 | Parameter | Bedeutung | Wenn in TaleSpire … |
 |---|---|---|
-| `WALL_T = 0.5` | angenommene Dicke der Wandkachel; Wände sitzen mittig auf den Wandlinien des Plans | … Wände um bis zu 0.25 neben der Bodenkante stehen → auf 0.25 oder 1.0 setzen |
-| `WALL_ALONG_X_ROT = 0` | Drehung, bei der eine Wandkachel in x-Richtung verläuft | … alle Wände um 90° verdreht sind → auf 90 setzen |
-| `DIAG_SIGN = -1` | Drehrichtung der 45°-Stücke | … die Diagonalwände spiegelverkehrt liegen → auf +1 setzen |
-| `CEIL_Y = 2.0` | Höhe der Deckenebene (= Wandhöhe) | … die Decke schwebt oder in den Wänden steckt → anpassen |
+| `WALL_T = 0.5` | angenommene Dicke der Wandkacheln; Wände sitzen mittig auf den Wandlinien des Plans | … Wände um bis zu 0.25 neben der Bodenkante stehen → 0.25 oder 1.0 |
+| `WALL_ALONG_X_ROT = 0` | Drehung, bei der eine Wandkachel in x-Richtung verläuft | … alle Wände um 90° verdreht sind → 90 |
+| `DIAG_SIGN = -1` | Drehrichtung der 45°-Stücke | … Diagonalwände spiegelverkehrt liegen → +1 |
+| `CEIL_Y = 2.0`, `ROOF_Y = 2.25`, `TIER2_H = 2.0` | Höhen von Decke, Dach und Aufbau | … Decke schwebt oder in Wänden steckt → anpassen |
+| `LIGHT_Y`, `SIGN_Y`, `WALL_INSET` | Höhe und Einschub der Wand-Details | … Lichtleisten zu hoch/tief oder vor der Wand → anpassen |
 | `PROP_Y = 0.0` | Höhe der Props über dem Bodenursprung | … Props im Boden versinken → 0.25 |
-| `FACE` | welche Drehung „Blickrichtung Nord/Ost/Süd/West“ ist | … Stühle vom Tisch wegschauen → Werte um 180 drehen |
+| `FACE` | welche Drehung „Blickrichtung“ ist | … Stühle vom Tisch wegschauen → Werte um 180 drehen |
 
-Danach einfach neu bauen:
+Neu bauen:
 
 ```bash
-python3 tools/build_grasshopper.py          # schreibt grasshopper/*.slab.txt
+python3 tools/build_grasshopper.py
 python3 tools/render_preview.py grasshopper/grasshopper_layout.png
 ```
 
-Das Layout selbst (Räume als Zellmengen, Diagonalwände, Türen, Props) steht ebenfalls in `tools/build_grasshopper.py`
-und lässt sich dort leicht ändern. `tools/slab_encoder.py` ist ein eigenständiger Encoder/Decoder für das
-Slab-Format v2.
+Das Layout (Räume als Zellmengen, Diagonalwände, Türen, Fenster, Props, Dachaufbauten) steht in
+`tools/build_grasshopper.py`; `tools/slab_encoder.py` ist ein eigenständiger Encoder/Decoder für Slab-Format v2.
 
 ### Verwendete TaleSpire-Assets
 
@@ -122,14 +138,61 @@ Slab-Format v2.
 | `medkit` | medkit chest 01 | `a341f6d2-f769-41b4-8afc-e9f9eecd0768` |
 | `lamp` | Lamp Small | `bfc0bcfa-3df5-4890-9654-6138c27b6e13` |
 | `wallcase` | wall case 01 | `d7c23080-3aa2-42bc-8e0a-392b406990b8` |
+| `floor_corr` | scifi floor 1x1 panel hard | `88696045-fa1f-416f-b94c-143f7f9ad229` |
+| `floor_ind1` | industrial_floor_1x1_01 | `8146433f-6b5f-44f2-bc49-35cd0cd47c36` |
+| `floor_ind2` | industrial_floor_2x2_01 | `e0eb866d-529f-498e-8e44-c49536060131` |
+| `floor_rub1` | SciFi floor rubber 1x1 | `acfe07e1-d352-4b77-b9f8-4632adf84c78` |
+| `floor_rub2` | SciFi floor rubber 2x2 | `e835a60b-c4bf-4f0c-9a04-cfb7063f3528` |
+| `floor_metal` | scifi floor 1x1 metal plane | `a9226e2f-40e5-4a87-92d8-820169c63f74` |
+| `floor_strip` | stripped floor 1x1 | `5ea4bd5a-8b0b-484b-b5a4-0bca761ae0fd` |
+| `hullfloor1` | Hull01_floor1x1 | `0f1c53e1-ca89-4776-bdb7-b4acd726fbbf` |
+| `hullfloor2` | Hull01_floor2x2 | `73b12504-0f23-4b3f-b814-50db20c004f0` |
+| `hullwall` | Hull_Sidewall_center_1x1 | `1577ee9a-c50d-490c-8604-8b3194e42131` |
+| `window` | wall window 1x1 | `6a8f68a5-1eb4-4311-b712-49fc6329d0de` |
+| `labwindow` | Lab wall with window 1x1 | `ab754a73-69ae-4581-99f0-3d3c969ee8e7` |
+| `jet` | Jet Engine | `c4958c89-46fd-4b6a-a042-008c1b4ba8d8` |
+| `jetbase` | Jet base ext | `382afc32-0eef-42dd-a125-68c7f012d4f3` |
+| `thruster` | Thruster static | `e97166a4-0626-4e31-a107-fd869aec2985` |
+| `engine` | Engine | `a6a9d645-01bd-4af6-af95-89f1f233df0c` |
+| `dish` | satellite basic floor | `c8e3ea9e-81c0-43fa-a324-6e401366b811` |
+| `solar` | Solar lock panel 2x1 | `2f9540ea-5f97-42b8-8b6f-89df7225070b` |
+| `fan` | ventilation fan | `bab4228b-b105-4218-962a-3fcd8ae26d49` |
+| `ventbox` | vent box mini | `68a549c3-da1e-4f0c-b883-b4ee740681e1` |
+| `ac` | AC unit | `f82e658b-133e-4d63-a330-6e48096a0cb9` |
+| `pipequad` | scifi pipe medial quad horizontal | `a41f298b-6626-44b0-9674-01c3a2964b52` |
+| `pipecorner` | scifi pipe medial Corner 01 | `804fab69-e4e4-4c04-936d-b68ac85d66e9` |
+| `support` | caged boxed support horizontal | `82e3906e-0634-41f9-b803-0d2625d829fd` |
+| `supportv` | caged heavy support vert | `ecf7d82a-eebd-4bc8-93a7-f48346b17b7a` |
+| `strip` | support strip 01 | `4ae573f6-952d-4895-ba3a-540bb8b8e03c` |
+| `ventlong` | ventilation long | `8545456a-79fb-4d25-b88e-3a4eeed1bd91` |
+| `lightstrip` | cyberpunk light strip 01 | `ac3d33a3-fd88-4bb6-bdbe-b8f5373d4e68` |
+| `walllamp` | Light wall 01 | `a105ee67-fbf6-45f6-813f-5f8048f7b0f8` |
+| `pillar` | scifi wall pillar | `f04681fc-6666-4b30-b2cf-5aeb82d9f63c` |
+| `screen` | Screen v1 | `e6bb9005-7211-464c-8587-4502dba4c3db` |
+| `screen3` | Screen v3 | `d995da3d-9c6b-490a-b454-bd169443283a` |
+| `security` | scifi_Screen security 01 | `90702c6d-3d53-4770-8409-842da063020e` |
+| `cam` | SecurityCamWallMount | `de6bb830-c21c-4062-aebc-17ad3aa1234f` |
+| `caution` | sign caution stripes cyber | `39776e3d-7f4f-4742-bc19-f33470aa6bc7` |
+| `signcockpit` | sign cockpit | `7b889f35-0f2e-44ff-97a2-55ca198351fc` |
+| `signmed` | sign medical | `738ba71b-437b-4315-968d-be89fb1cfbba` |
+| `signplanet` | sign planet | `d73265e5-257c-410d-b729-a0dc22cdc269` |
+| `cableceil` | Cable ceiling v1 | `b521c4dc-116f-4f4e-a361-f4e7ce70a33f` |
+| `rackweap` | rack_weapons_military_01 | `3b52af64-f7d5-419e-9a25-8cae11a7d899` |
+| `vending` | vanding machine pop | `7033403b-30bf-4802-9e45-ef77e3573dab` |
+| `fridge` | refridgerator_01 | `2df8c6fd-78c5-46c5-9c2c-50dceb756305` |
+| `counter` | cabinet_CounterTop_001 | `8851a702-adea-4c5d-9b51-a85515c03d2b` |
+| `stove` | Stove | `7bbd64f8-38f7-4703-9241-7dc935e8374d` |
+| `ksink` | kitchen_sink_001 | `fd365f56-dd8f-43ec-a700-c072af7d42ef` |
+| `surgery` | Surgery Bed v1 | `eda4fafa-71ef-4628-8f60-e4bdba9a51b1` |
+| `surglamp` | Surgery lamp | `349aed42-a69a-45f6-8d20-0a62381461ed` |
 
 ---
 
 ## English summary
 
-The Death in Space **Grasshopper** deck plan as a walkable TaleSpire slab (1 square = 1 unit, 53 × 36 squares),
-with floors, walls, doors, furniture props and a separate ceiling layer for TaleSpire's height clipping.
-Paste `grasshopper/grasshopper_full.slab.txt` (or `grasshopper_no_ceiling` + `grasshopper_layer4_ceiling` at the same
-cursor position; partial slabs carry one anchor tile at the shared minimum corner, delete it afterwards).
-The generator `tools/build_grasshopper.py` holds the layout and a `CONFIG` block for the few conventions that could not
-be verified without a running game (wall thickness/orientation, 45° rotation direction, ceiling height, prop facing).
+The Death in Space **Grasshopper** as a complete walkable TaleSpire ship: interior deck (floors by room type,
+walls, doors, windows, furniture, light strips, pillars, signs), interior ceiling, a closed hull ring with exterior
+hull walls, roof plating with greebles, a second hull tier over the mess hall, stern engines and thrusters.
+Paste `grasshopper/grasshopper_full.slab.txt`, or the A/B/C slabs at the same cursor position (each carries one anchor
+tile at the shared minimum corner, delete it afterwards). The generator `tools/build_grasshopper.py` holds the layout
+and a `CONFIG` block for the conventions that could not be verified without a running game.

@@ -4,6 +4,10 @@
 Grid: the deck plan's squares. col = plan column (west -> east), row = plan row (north -> south).
 World: x = col, z = NROWS - row  (north is +z), y up.  1 square = 1 TaleSpire unit.
 
+Layers: interior floor/walls/doors/props/details at y=0, interior ceiling at CEIL_Y, a one-cell hull
+ring with exterior hull walls around the deck, hull roof plating at ROOF_Y with greebles, a second
+hull tier over the mess-hall block, engines at the stern (east) and thrusters on the hull.
+
 Placement conventions (from TaleSpire's own data model, see README):
   * tiles (floors, walls, doors, ceilings): stored position = min corner of the axis-aligned
     footprint; for 90/270 degree rotations TaleSpire swaps the x/z size.
@@ -28,6 +32,12 @@ DIAG_SIGN = -1        # +1 or -1: flips which way 45-degree pieces turn (Unity: 
 CEIL_Y = 2.0          # height of the ceiling layer (wall height)
 PROP_Y = 0.0          # props sit on the floor plane
 FACE = {"N": 0, "E": 90, "S": 180, "W": 270}  # prop 'front' at rot 0 assumed to face +z (north)
+ROOF_Y = 2.25         # hull plating above the interior ceiling
+TIER2_H = 2.0         # height of the superstructure walls on top of the roof
+LIGHT_Y = 1.5         # height of corridor light strips on the walls
+SIGN_Y = 1.2          # height of wall signs / screens
+WALL_INSET = 0.12     # how far wall-mounted props are pushed into the wall (clipping detail)
+OFFSET = 2.0          # shift of the whole slab so hull and engines never get negative coordinates
 
 # ----------------------------------------------------------------------------- ASSETS
 A = {
@@ -80,6 +90,56 @@ A = {
     "medkit": ("a341f6d2-f769-41b4-8afc-e9f9eecd0768", "medkit chest 01"),
     "lamp": ("bfc0bcfa-3df5-4890-9654-6138c27b6e13", "Lamp Small"),
     "wallcase": ("d7c23080-3aa2-42bc-8e0a-392b406990b8", "wall case 01"),
+    # floors per room type
+    "floor_corr": ("88696045-fa1f-416f-b94c-143f7f9ad229", "scifi floor 1x1 panel hard"),
+    "floor_ind1": ("8146433f-6b5f-44f2-bc49-35cd0cd47c36", "industrial_floor_1x1_01"),
+    "floor_ind2": ("e0eb866d-529f-498e-8e44-c49536060131", "industrial_floor_2x2_01"),
+    "floor_rub1": ("acfe07e1-d352-4b77-b9f8-4632adf84c78", "SciFi floor rubber 1x1"),
+    "floor_rub2": ("e835a60b-c4bf-4f0c-9a04-cfb7063f3528", "SciFi floor rubber 2x2"),
+    "floor_metal": ("a9226e2f-40e5-4a87-92d8-820169c63f74", "scifi floor 1x1 metal plane"),
+    "floor_strip": ("5ea4bd5a-8b0b-484b-b5a4-0bca761ae0fd", "stripped floor 1x1"),
+    # hull / exterior
+    "hullfloor1": ("0f1c53e1-ca89-4776-bdb7-b4acd726fbbf", "Hull01_floor1x1"),
+    "hullfloor2": ("73b12504-0f23-4b3f-b814-50db20c004f0", "Hull01_floor2x2"),
+    "hullwall": ("1577ee9a-c50d-490c-8604-8b3194e42131", "Hull_Sidewall_center_1x1"),
+    "window": ("6a8f68a5-1eb4-4311-b712-49fc6329d0de", "wall window 1x1"),
+    "labwindow": ("ab754a73-69ae-4581-99f0-3d3c969ee8e7", "Lab wall with window 1x1"),
+    "jet": ("c4958c89-46fd-4b6a-a042-008c1b4ba8d8", "Jet Engine"),
+    "jetbase": ("382afc32-0eef-42dd-a125-68c7f012d4f3", "Jet base ext"),
+    "thruster": ("e97166a4-0626-4e31-a107-fd869aec2985", "Thruster static"),
+    "engine": ("a6a9d645-01bd-4af6-af95-89f1f233df0c", "Engine"),
+    "dish": ("c8e3ea9e-81c0-43fa-a324-6e401366b811", "satellite basic floor"),
+    "solar": ("2f9540ea-5f97-42b8-8b6f-89df7225070b", "Solar lock panel 2x1"),
+    "fan": ("bab4228b-b105-4218-962a-3fcd8ae26d49", "ventilation fan"),
+    "ventbox": ("68a549c3-da1e-4f0c-b883-b4ee740681e1", "vent box mini"),
+    "ac": ("f82e658b-133e-4d63-a330-6e48096a0cb9", "AC unit"),
+    "pipequad": ("a41f298b-6626-44b0-9674-01c3a2964b52", "scifi pipe medial quad horizontal"),
+    "pipecorner": ("804fab69-e4e4-4c04-936d-b68ac85d66e9", "scifi pipe medial Corner 01"),
+    "support": ("82e3906e-0634-41f9-b803-0d2625d829fd", "caged boxed support horizontal"),
+    "supportv": ("ecf7d82a-eebd-4bc8-93a7-f48346b17b7a", "caged heavy support vert"),
+    "strip": ("4ae573f6-952d-4895-ba3a-540bb8b8e03c", "support strip 01"),
+    "ventlong": ("8545456a-79fb-4d25-b88e-3a4eeed1bd91", "ventilation long"),
+    # interior detail
+    "lightstrip": ("ac3d33a3-fd88-4bb6-bdbe-b8f5373d4e68", "cyberpunk light strip 01"),
+    "walllamp": ("a105ee67-fbf6-45f6-813f-5f8048f7b0f8", "Light wall 01"),
+    "pillar": ("f04681fc-6666-4b30-b2cf-5aeb82d9f63c", "scifi wall pillar"),
+    "screen": ("e6bb9005-7211-464c-8587-4502dba4c3db", "Screen v1"),
+    "screen3": ("d995da3d-9c6b-490a-b454-bd169443283a", "Screen v3"),
+    "security": ("90702c6d-3d53-4770-8409-842da063020e", "scifi_Screen security 01"),
+    "cam": ("de6bb830-c21c-4062-aebc-17ad3aa1234f", "SecurityCamWallMount"),
+    "caution": ("39776e3d-7f4f-4742-bc19-f33470aa6bc7", "sign caution stripes cyber"),
+    "signcockpit": ("7b889f35-0f2e-44ff-97a2-55ca198351fc", "sign cockpit"),
+    "signmed": ("738ba71b-437b-4315-968d-be89fb1cfbba", "sign medical"),
+    "signplanet": ("d73265e5-257c-410d-b729-a0dc22cdc269", "sign planet"),
+    "cableceil": ("b521c4dc-116f-4f4e-a361-f4e7ce70a33f", "Cable ceiling v1"),
+    "rackweap": ("3b52af64-f7d5-419e-9a25-8cae11a7d899", "rack_weapons_military_01"),
+    "vending": ("7033403b-30bf-4802-9e45-ef77e3573dab", "vanding machine pop"),
+    "fridge": ("2df8c6fd-78c5-46c5-9c2c-50dceb756305", "refridgerator_01"),
+    "counter": ("8851a702-adea-4c5d-9b51-a85515c03d2b", "cabinet_CounterTop_001"),
+    "stove": ("7bbd64f8-38f7-4703-9241-7dc935e8374d", "Stove"),
+    "ksink": ("fd365f56-dd8f-43ec-a700-c072af7d42ef", "kitchen_sink_001"),
+    "surgery": ("eda4fafa-71ef-4628-8f60-e4bdba9a51b1", "Surgery Bed v1"),
+    "surglamp": ("349aed42-a69a-45f6-8d20-0a62381461ed", "Surgery lamp"),
 }
 
 # ----------------------------------------------------------------------------- LAYOUT
@@ -304,6 +364,108 @@ prop("generator", 46.0, 31.9, 0); prop("pipe2", 44.5, 31.5, 90)
 for r in (22, 24, 26, 28):
     prop("cryo", 48.0, r + 0.5, 90)
 
+# Floor type per room (1x1 key, optional 2x2 key); default is the plain space ship floor
+ROOM_FLOOR = {
+    "corr_top_w": ("floor_corr", None), "corr_top_e": ("floor_corr", None), "corr_central": ("floor_corr", None),
+    "corr_hex_east": ("floor_corr", None), "corr_right": ("floor_corr", None), "passage20": ("floor_corr", None),
+    "closet": ("floor_corr", None), "bridge_link": ("floor_corr", None), "hex_east": ("floor_corr", None),
+    "hex_south": ("floor_corr", None), "vestibule": ("floor_corr", None), "mess_rw_link": ("floor_corr", None),
+    "rw_north": ("floor_corr", None), "rw_south": ("floor_corr", None),
+    "cargo": ("floor_ind1", "floor_ind2"), "hangar": ("floor_ind1", "floor_ind2"), "cargo_closet": ("floor_ind1", None),
+    "storage": ("floor_ind1", "floor_ind2"), "lower": ("floor_ind1", "floor_ind2"),
+    "engineering": ("floor_rub1", "floor_rub2"), "machine": ("floor_rub1", "floor_rub2"),
+    "reactor": ("floor_metal", None), "generator": ("floor_metal", None),
+    "airlock_n": ("floor_metal", None), "airlock_s": ("floor_metal", None),
+    "hydroponics": ("floor_strip", None), "bath_n": ("floor_strip", None), "bath_s": ("floor_strip", None),
+}
+# corridors: every third cell gets a glowing floor tile, and light strips go on their walls
+GLOW_CORRIDORS = ("corr_top_e", "corr_central", "corr_hex_east", "corr_right", "corr_top_w")
+LIT_ROOMS = GLOW_CORRIDORS + ("hex_south", "hex_east", "bridge_link", "mess_rw_link", "rw_south", "passage20")
+
+# Wall edges that become windows instead of plain walls
+WINDOW_EDGES = {
+    ("v", 1, 10), ("v", 1, 11),                                   # bow
+    ("h", 14, 8), ("h", 15, 8), ("h", 16, 8), ("h", 17, 8),       # observation room north
+    ("h", 14, 14), ("h", 17, 14),                                 # observation room south
+    ("v", 13, 9), ("v", 13, 10), ("v", 13, 11), ("v", 13, 12),    # observation room west
+    ("v", 19, 9), ("v", 19, 12),                                  # observation room east
+    ("h", 15, 7), ("h", 16, 7),                                   # apse
+    ("h", 33, 6), ("h", 34, 6), ("h", 36, 6), ("h", 37, 6),       # bunk alcoves
+    ("h", 33, 16), ("h", 34, 16), ("h", 36, 16), ("h", 37, 16),
+    ("h", 26, 2), ("h", 27, 2),                                   # corridor arch
+    ("v", 25, 25), ("v", 25, 26),                                 # hydroponics (lab window)
+    ("h", 47, 1), ("h", 48, 1), ("h", 49, 1),                     # top-right block
+    ("v", 51, 10), ("v", 51, 11), ("v", 51, 12),                  # starboard hall
+}
+LAB_WINDOWS = {("v", 25, 25), ("v", 25, 26)}
+DIAG_WINDOWS = {((5, 8), (3, 10)), ((3, 12), (5, 14)), ((14, 8), (13, 9)), ((18, 8), (19, 9)),
+                ((13, 13), (14, 14)), ((19, 13), (18, 14)), ((45, 3), (47, 1))}
+
+# Extra props with explicit height: (key, x, row_y, rot, y)
+X = []
+
+
+def xprop(key, x, ry, rot=0, y=0.0):
+    X.append((key, x, ry, rot, y))
+
+
+# -- engines at the stern (east) and manoeuvring thrusters
+for ry in (17.5, 24.5, 31.0):
+    xprop("jetbase", 53.0, ry, FACE["E"]); xprop("jet", 54.2, ry, FACE["E"])
+xprop("engine", 53.0, 24.5, FACE["E"], ROOF_Y)
+for (x, ry, f) in [(7.5, 4.2, "N"), (8.5, 4.2, "N"), (7.5, 17.8, "S"), (8.5, 17.8, "S"),
+                   (0.3, 9.4, "W"), (0.3, 12.6, "W"), (35.5, 34.0, "S"), (33.5, 34.0, "S")]:
+    xprop("thruster", x, ry, FACE[f], 0.5)
+# -- roof greebles (on the hull plating)
+for (x, ry) in [(29.0, 6.0), (23.0, 13.0), (41.0, 19.5), (32.0, 27.0), (16.0, 19.0), (6.5, 7.0)]:
+    xprop("fan", x, ry, 0, ROOF_Y)
+for (x, ry, r) in [(27.5, 14.0, 0), (27.5, 17.0, 0), (27.5, 20.0, 0), (27.5, 23.0, 0),
+                   (31.0, 3.5, 90), (34.0, 3.5, 90), (37.0, 3.5, 90), (40.0, 3.5, 90),
+                   (49.5, 21.0, 0), (49.5, 24.0, 0), (49.5, 27.0, 0)]:
+    xprop("pipequad", x, ry, r, ROOF_Y)
+xprop("pipecorner", 27.5, 11.5, 0, ROOF_Y); xprop("pipecorner", 49.5, 18.5, 90, ROOF_Y)
+for (x, ry) in [(22.5, 7.5), (25.0, 7.5), (44.5, 19.5), (46.5, 19.5), (45.0, 24.5), (42.0, 24.5)]:
+    xprop("ac", x, ry, FACE["S"], ROOF_Y)
+for (x, ry) in [(14.5, 9.0), (17.5, 9.0), (14.5, 12.5), (17.5, 12.5), (36.0, 26.5), (33.0, 30.0)]:
+    xprop("ventbox", x, ry, 0, ROOF_Y)
+for (x, ry, r) in [(5.0, 9.5, 90), (5.0, 12.5, 90), (9.0, 9.5, 90), (9.0, 12.5, 90)]:
+    xprop("ventlong", x, ry, r, ROOF_Y)
+xprop("dish", 48.0, 3.0, FACE["E"], ROOF_Y)
+xprop("dish", 46.5, 10.5, FACE["N"], ROOF_Y + TIER2_H)
+for (x, ry) in [(33.0, 9.0), (36.0, 9.0), (39.0, 9.0), (33.0, 12.5), (36.0, 12.5), (39.0, 12.5)]:
+    xprop("solar", x, ry, 90, ROOF_Y + TIER2_H)
+for (x, ry, r) in [(21.0, 10.5, 0), (26.0, 10.5, 0), (10.0, 6.5, 90), (10.0, 15.5, 90)]:
+    xprop("support", x, ry, r, ROOF_Y)
+for (x, ry) in [(13.0, 7.5), (19.0, 7.5), (13.0, 14.5), (19.0, 14.5), (30.5, 16.5), (38.5, 16.5), (30.5, 5.5), (38.5, 5.5)]:
+    xprop("supportv", x, ry, 0, ROOF_Y)
+for (x, ry, r) in [(2.0, 8.5, 0), (2.0, 13.5, 0), (24.0, 3.0, 90), (34.0, 17.0, 90)]:
+    xprop("strip", x, ry, r, ROOF_Y)
+# -- wall screens, signs, cameras
+xprop("screen", 7.0, 8.1, FACE["S"], SIGN_Y); xprop("screen", 9.0, 8.1, FACE["S"], SIGN_Y)
+xprop("screen3", 11.5, 9.9, FACE["S"], SIGN_Y); xprop("signcockpit", 12.5, 9.9, FACE["S"], SIGN_Y + 0.4)
+xprop("screen", 32.5, 8.1, FACE["S"], SIGN_Y); xprop("screen3", 38.5, 8.1, FACE["S"], SIGN_Y)
+xprop("security", 27.1, 12.5, FACE["E"], SIGN_Y); xprop("security", 28.9, 18.5, FACE["W"], SIGN_Y)
+xprop("security", 44.9, 9.5, FACE["E"], SIGN_Y); xprop("screen", 47.1, 1.5, FACE["E"], SIGN_Y)
+xprop("signplanet", 16.0, 7.1, FACE["S"], SIGN_Y + 0.5)
+xprop("signmed", 40.5, 8.1, FACE["S"], SIGN_Y + 0.4)
+for (x, ry, f) in [(6.6, 7.0, "E"), (9.4, 7.0, "W"), (6.6, 14.9, "E"), (9.4, 14.9, "W"),
+                   (33.9, 31.9, "N"), (35.1, 31.9, "N"), (48.9, 22.5, "E"), (48.9, 24.5, "E"),
+                   (48.9, 26.5, "E"), (48.9, 28.5, "E")]:
+    xprop("caution", x, ry, FACE[f], SIGN_Y)
+for (x, ry, f) in [(27.1, 5.5, "E"), (28.9, 9.5, "W"), (29.1, 10.1, "S"), (43.9, 11.5, "W"), (20.1, 10.1, "S"),
+                   (49.1, 20.1, "S")]:
+    xprop("cam", x, ry, FACE[f], 1.8)
+# -- galley corner of the mess hall (west wall), med-bay corner (north-east), weapon racks, cabling
+xprop("counter", 31.9, 11.5, FACE["E"]); xprop("ksink", 31.9, 10.5, FACE["E"]); xprop("stove", 31.9, 12.5, FACE["E"])
+xprop("fridge", 32.5, 8.4, FACE["S"]); xprop("vending", 38.5, 8.4, FACE["S"])
+xprop("surgery", 40.0, 9.0, 90); xprop("surglamp", 40.0, 9.0, 0)
+xprop("rackweap", 21.9, 8.0, FACE["W"]); xprop("rackweap", 46.0, 20.9, FACE["N"])
+xprop("cableceil", 27.5, 16.0, 0, CEIL_Y - 0.1); xprop("cableceil", 16.0, 18.5, 90, CEIL_Y - 0.1)
+xprop("cableceil", 46.0, 19.0, 0, CEIL_Y - 0.1)
+for (x, ry, f) in [(5.5, 11.0, "E"), (10.5, 11.0, "W"), (16.0, 13.9, "N"), (23.5, 9.9, "N"), (36.0, 13.9, "N"),
+                   (47.5, 13.9, "N"), (34.5, 23.9, "N"), (47.5, 21.9, "N"), (27.0, 28.9, "N"), (46.0, 32.9, "N")]:
+    xprop("walllamp", x, ry, FACE[f], 1.6)
+
 # ----------------------------------------------------------------------------- BUILD
 
 
@@ -312,117 +474,218 @@ def wz(row):
     return NROWS - row
 
 
+def neighbours4(c, r):
+    return {("h", c, r): (c, r - 1), ("h", c, r + 1): (c, r + 1),
+            ("v", c, r): (c - 1, r), ("v", c + 1, r): (c + 1, r)}
+
+
+def dilate8(cells):
+    out = set()
+    for (c, r) in cells:
+        for dc in (-1, 0, 1):
+            for dr in (-1, 0, 1):
+                out.add((c + dc, r + dr))
+    return out
+
+
 def main(out_dir):
     floor = set().union(*ROOMS.values())
     assert not (floor & DIAG_CELLS), floor & DIAG_CELLS
     all_cells = floor | DIAG_CELLS
+    cell_room = {cell: name for name, cells in ROOMS.items() for cell in cells}
 
     # --- walls from floor edges
     edges = {}  # ('h'|'v', col, row) -> kind
     for (c, r) in floor:
-        for key, (nc, nr) in {("h", c, r): (c, r - 1), ("h", c, r + 1): (c, r + 1),
-                              ("v", c, r): (c - 1, r), ("v", c + 1, r): (c + 1, r)}.items():
-            if (nc, nr) in all_cells:
-                continue
-            edges[key] = "wall"
+        for key, nb in neighbours4(c, r).items():
+            if nb not in all_cells:
+                edges[key] = "wall"
     for key in PARTITIONS:
         edges[key] = "wall"
     for key, kind in DOORS.items():
         edges[key] = kind
 
     # --- slabs
-    s_floor, s_walls, s_props, s_ceil = Slab(), Slab(), Slab(), Slab()
+    s_floor, s_walls, s_props, s_ceil, s_detail, s_hull = (Slab() for _ in range(6))
 
     def add(slab, key, x, y, z, rot):
         u, n = A[key]
-        slab.add(u, round(x, 2), round(y, 2), round(z, 2), rot, n)
+        slab.add(u, round(x + OFFSET, 2), round(y, 2), round(z + OFFSET, 2), rot, n)
 
-    # floors: greedy 2x2 where possible
-    done = set()
-    for (c, r) in sorted(all_cells):
-        if (c, r) in done or (c, r) in SPECIAL_FLOOR:
-            continue
-        block = {(c, r), (c + 1, r), (c, r + 1), (c + 1, r + 1)}
-        if block <= all_cells and not (block & done) and not (block & set(SPECIAL_FLOOR)):
-            add(s_floor, "floor2", c, 0, wz(r + 2), 0)
-            done |= block
-        else:
-            add(s_floor, "floor1", c, 0, wz(r + 1), 0)
-            done.add((c, r))
+    def plate(slab, cells, y, kind_of, skip=frozenset()):
+        """Lay 1x1 / 2x2 tiles over `cells`; kind_of(cell) -> (key1x1, key2x2 or None)."""
+        done = set()
+        for (c, r) in sorted(cells):
+            if (c, r) in done or (c, r) in skip:
+                continue
+            k1, k2 = kind_of((c, r))
+            block = {(c, r), (c + 1, r), (c, r + 1), (c + 1, r + 1)}
+            if (k2 and block <= cells and not (block & done) and not (block & skip)
+                    and all(kind_of(b) == (k1, k2) for b in block)):
+                add(slab, k2, c, y, wz(r + 2), 0)
+                done |= block
+            else:
+                add(slab, k1, c, y, wz(r + 1), 0)
+                done.add((c, r))
+
+    # floors: per-room kinds, glow tiles in corridors, special tiles
+    glow = {(c, r) for name in GLOW_CORRIDORS for (c, r) in ROOMS[name]
+            if (c + r) % 3 == 0 and (c, r) not in SPECIAL_FLOOR}
+    plate(s_floor, all_cells, 0, lambda cell: ROOM_FLOOR.get(cell_room.get(cell), ("floor1", "floor2")),
+          skip=frozenset(SPECIAL_FLOOR) | glow)
+    for (c, r) in sorted(glow):
+        add(s_floor, "floorglow", c, 0, wz(r + 1), 0)
     for (c, r), key in SPECIAL_FLOOR.items():
         add(s_floor, key, c, 0, wz(r + 1), 0)
 
-    # walls / doors along cell edges
+    # walls / doors / windows along cell edges
     rot_x = WALL_ALONG_X_ROT % 360
     rot_z = (WALL_ALONG_X_ROT + 90) % 360
+
+    def place_edge(slab, asset, axis, c, r, length=1, y=0.0):
+        if axis == "h":   # runs along x, boundary at plan row r -> z = wz(r)
+            add(slab, asset, c, y, wz(r) - WALL_T / 2, rot_x)
+        else:             # runs along z, boundary at plan col c, cells rows r..r+length-1
+            add(slab, asset, c - WALL_T / 2, y, wz(r + length), rot_z)
+
     handled = set()
-    for (kind_axis, c, r), kind in sorted(edges.items()):
-        if (kind_axis, c, r) in handled:
+    for (axis, c, r), kind in sorted(edges.items()):
+        if (axis, c, r) in handled:
             continue
         asset = {"wall": "wall", "door": "door", "hatch": "hatch", "door2": "door2"}[kind]
+        if kind == "wall" and (axis, c, r) in WINDOW_EDGES:
+            asset = "labwindow" if (axis, c, r) in LAB_WINDOWS else "window"
         length = 1
         if kind == "door2":  # pair the two halves of a double door
-            nxt = (kind_axis, c + 1, r) if kind_axis == "h" else (kind_axis, c, r + 1)
+            nxt = (axis, c + 1, r) if axis == "h" else (axis, c, r + 1)
             if edges.get(nxt) == "door2" and nxt not in handled:
                 handled.add(nxt)
                 length = 2
             else:
                 asset = "door"
-        if kind_axis == "h":  # runs along x, boundary at plan row r -> z = wz(r)
-            z0 = wz(r) - WALL_T / 2
-            add(s_walls, asset, c, 0, z0, rot_x)
-        else:                 # runs along z, boundary at plan col c, cells rows r..r+length-1
-            x0 = c - WALL_T / 2
-            add(s_walls, asset, x0, 0, wz(r + length), rot_z)
+        place_edge(s_walls, asset, axis, c, r, length)
 
-    # diagonal walls
+    # diagonal walls (interior) + matching exterior hull diagonals one cell further out
     for seg in DIAG_WALLS:
         (c0, r0), (c1, r1) = seg[0], seg[1]
         is_door = len(seg) > 2 and seg[2] == "door"
         x0, z0, x1, z1 = c0, wz(r0), c1, wz(r1)
         length = math.hypot(x1 - x0, z1 - z0)
         n = max(1, math.ceil(length - 1e-6))
-        ang = math.degrees(math.atan2(z1 - z0, x1 - x0))  # 45 or -45 (mod 180)
+        ang = math.degrees(math.atan2(z1 - z0, x1 - x0))
         rot = (WALL_ALONG_X_ROT + DIAG_SIGN * ang) % 360
+        mx, mz = (x0 + x1) / 2, (z0 + z1) / 2
+        nx, nz = -(z1 - z0) / length, (x1 - x0) / length   # normal; flip so it points outward
+        probe = (int(math.floor(mx + nx * 0.6)), int(math.floor(NROWS - (mz + nz * 0.6))))
+        if probe in floor:
+            nx, nz = -nx, -nz
         for i in range(n):
             t = (i + 0.5) / n
             cx, cz = x0 + (x1 - x0) * t, z0 + (z1 - z0) * t
             key = "door" if (is_door and i != n // 2) else "wall"
-            # tiles rotate about the centre of their (unswapped) footprint at 45 degrees
-            add(s_walls, key, cx - 0.5, 0, cz - WALL_T / 2, rot)
+            if key == "wall" and (seg[0], seg[1]) in DIAG_WINDOWS:
+                key = "window"
+            add(s_walls, key, cx - 0.5, 0, cz - WALL_T / 2, rot)   # tiles turn about their footprint centre
+        if not is_door:
+            for i in range(n + 1):
+                t = (i + 0.5) / (n + 1) * 1.3 - 0.15
+                cx, cz = x0 + (x1 - x0) * t + nx, z0 + (z1 - z0) * t + nz
+                add(s_hull, "hullwall", cx - 0.5, 0, cz - WALL_T / 2, rot)
+
+    # corner pillars where two wall lines meet (clipped into the corner)
+    pts = {}
+    for (axis, c, r) in edges:
+        a, b = ((c, r), (c + 1, r)) if axis == "h" else ((c, r), (c, r + 1))
+        for p_ in (a, b):
+            pts.setdefault(p_, set()).add(axis)
+    for (c, r), axes in sorted(pts.items()):
+        if len(axes) == 2 and any(nb in floor for nb in ((c, r), (c - 1, r), (c, r - 1), (c - 1, r - 1))):
+            add(s_detail, "pillar", c, 0, wz(r), 0)
+
+    # light strips along corridor walls, pushed slightly into the wall
+    for name in LIT_ROOMS:
+        for (c, r) in sorted(ROOMS[name]):
+            if (c + r) % 2:
+                continue
+            for key, (dx, dz, rot) in {("h", c, r): (0.5, -WALL_INSET, FACE["S"]),
+                                       ("h", c, r + 1): (0.5, 1 + WALL_INSET, FACE["N"]),
+                                       ("v", c, r): (-WALL_INSET, 0.5, FACE["E"]),
+                                       ("v", c + 1, r): (1 + WALL_INSET, 0.5, FACE["W"])}.items():
+                if edges.get(key) == "wall":
+                    add(s_detail, "lightstrip", c + dx, LIGHT_Y, wz(r + 1) + dz, rot)
 
     # props
     for key, x, ry, rot in P:
         add(s_props, key, x, PROP_Y, NROWS - ry, rot)
+    for key, x, ry, rot, y in X:
+        target = s_hull if (y >= ROOF_Y or key in ("jet", "jetbase", "thruster", "engine")) else s_detail
+        add(target, key, x, y, NROWS - ry, rot)
 
-    # ceiling
+    # interior ceiling
     for (c, r) in sorted(all_cells):
         add(s_ceil, "ceil", c, CEIL_Y, wz(r + 1), 0)
 
+    # --- hull: one ring of cells around the interior, exterior hull walls, roof plating
+    # hull = one-cell ring around every room, plus all voids enclosed by that ring (pod bay, gaps
+    # between rooms), so the ship has one closed silhouette; found by flooding from outside.
+    shell = dilate8(all_cells)
+    outside, stack = set(), [(-2, -2)]
+    while stack:
+        cell = stack.pop()
+        if cell in outside or cell in shell:
+            continue
+        c, r = cell
+        if not (-2 <= c <= NCOLS + 1 and -2 <= r <= NROWS + 1):
+            continue
+        outside.add(cell)
+        stack += [(c + 1, r), (c - 1, r), (c, r + 1), (c, r - 1)]
+    hull_cells = {(c, r) for c in range(-1, NCOLS + 1) for r in range(-1, NROWS + 1)} - outside
+    ring = hull_cells - all_cells
+    for (c, r) in sorted(ring):
+        for key, nb in neighbours4(c, r).items():
+            if nb not in hull_cells:
+                place_edge(s_hull, "hullwall", *key)
+        add(s_hull, "hullfloor1", c, 0, wz(r + 1), 0)
+    plate(s_hull, hull_cells, ROOF_Y, lambda cell: ("hullfloor1", "hullfloor2"))
+
+    # --- superstructure (tier 2) over the mess-hall block, with its own hull walls and plating
+    core = set().union(*(ROOMS[n] for n in ("mess", "alcove_nw", "alcove_ne", "alcove_sw", "alcove_se",
+                                             "bath_n", "bath_s", "mess_rw_link")))
+    core |= {(42, 8), (43, 9), (42, 13), (43, 12)}
+    tier = dilate8(core)
+    for (c, r) in sorted(tier):
+        for key, nb in neighbours4(c, r).items():
+            if nb not in tier:
+                place_edge(s_hull, "hullwall", *key, y=ROOF_Y)
+    plate(s_hull, tier, ROOF_Y + TIER2_H, lambda cell: ("hullfloor1", "hullfloor2"))
+
     # --- write
     os.makedirs(out_dir, exist_ok=True)
-    full = Slab()
-    for s in (s_floor, s_walls, s_props, s_ceil):
-        for u, lst in s.layouts.items():
-            for x, y, z, rot in lst:
-                full.add(u, x, y, z, rot * 15, s.names.get(u))
-    no_ceiling = Slab()
-    for s in (s_floor, s_walls, s_props):
-        for u, lst in s.layouts.items():
-            for x, y, z, rot in lst:
-                no_ceiling.add(u, x, y, z, rot * 15, s.names.get(u))
+
+    def merge(*slabs):
+        m = Slab()
+        for s in slabs:
+            for u, lst in s.layouts.items():
+                for x, y, z, rot in lst:
+                    m.add(u, x, y, z, rot * 15, s.names.get(u))
+        return m
+
+    full = merge(s_floor, s_walls, s_props, s_detail, s_ceil, s_hull)
+    interior = merge(s_floor, s_walls, s_props, s_detail)
     # Every partial slab gets one anchor floor tile at the common minimum corner, so that all
     # layers line up when pasted at the same cursor position/height. Delete it afterwards.
     (ax, ay, az), _ = full.bounds()
-    for s in (s_floor, s_walls, s_props, s_ceil):
-        add(s, "floor1", ax, ay, az, 0)
+    for s in (s_floor, s_walls, s_props, s_detail, s_ceil, s_hull, interior):
+        add(s, "floor1", ax - OFFSET, ay, az - OFFSET, 0)
     outputs = {
         "grasshopper_full.slab.txt": full,
-        "grasshopper_no_ceiling.slab.txt": no_ceiling,
-        "grasshopper_layer1_floor.slab.txt": s_floor,
-        "grasshopper_layer2_walls_doors.slab.txt": s_walls,
-        "grasshopper_layer3_props.slab.txt": s_props,
-        "grasshopper_layer4_ceiling.slab.txt": s_ceil,
+        "grasshopper_A_interior.slab.txt": interior,
+        "grasshopper_B_ceiling.slab.txt": s_ceil,
+        "grasshopper_C_hull_roof_engines.slab.txt": s_hull,
+        "grasshopper_layer_floor.slab.txt": s_floor,
+        "grasshopper_layer_walls_doors.slab.txt": s_walls,
+        "grasshopper_layer_props.slab.txt": s_props,
+        "grasshopper_layer_details_lights.slab.txt": s_detail,
     }
     report = []
     for name, slab in outputs.items():
@@ -434,7 +697,7 @@ def main(out_dir):
         print(f"{name:45s} assets={n:5d} kinds={k:3d} chars={ln}")
     lo, hi = full.bounds()
     print("bounds", lo, hi)
-    return floor, DIAG_CELLS, edges, DIAG_WALLS
+    return floor, DIAG_CELLS, edges, DIAG_WALLS, ring, tier
 
 
 if __name__ == "__main__":

@@ -9,7 +9,7 @@ import build_grasshopper as bg  # noqa: E402
 
 
 def render(out_png, plan_png=None, X0=117.0, Y0=164.0, P=59.1):
-    floor, diag, edges, diag_walls = bg.main(os.path.join(os.path.dirname(__file__), "..", "grasshopper"))
+    floor, diag, edges, diag_walls, ring, tier = bg.main(os.path.join(os.path.dirname(__file__), "..", "grasshopper"))
     if plan_png:
         im = Image.open(plan_png).convert("RGBA")
     else:
@@ -21,6 +21,8 @@ def render(out_png, plan_png=None, X0=117.0, Y0=164.0, P=59.1):
     def px(c, r):
         return (X0 + P * c, Y0 + P * r)
 
+    for (c, r) in ring:
+        d.rectangle([px(c, r), px(c + 1, r + 1)], fill=(90, 90, 90, 120))
     for (c, r) in floor:
         d.rectangle([px(c, r), px(c + 1, r + 1)], fill=(0, 160, 255, 70))
     for (c, r) in diag:
@@ -37,10 +39,20 @@ def render(out_png, plan_png=None, X0=117.0, Y0=164.0, P=59.1):
         (c0, r0), (c1, r1) = seg[0], seg[1]
         col = (0, 170, 0, 230) if len(seg) > 2 else (220, 0, 0, 230)
         d.line([px(c0, r0), px(c1, r1)], fill=col, width=6)
+    for (c, r) in tier:
+        for (dc, dr, a, b) in ((0, -1, (c, r), (c + 1, r)), (0, 1, (c, r + 1), (c + 1, r + 1)),
+                               (-1, 0, (c, r), (c, r + 1)), (1, 0, (c + 1, r), (c + 1, r + 1))):
+            if (c + dc, r + dr) not in tier:
+                d.line([px(*a), px(*b)], fill=(255, 120, 0, 255), width=4)
     for key, x, ry, rot in bg.P:
         cx, cy = px(x, ry)
         d.ellipse([cx - 9, cy - 9, cx + 9, cy + 9], outline=(0, 0, 0, 255), fill=(255, 255, 255, 200), width=2)
         d.text((cx + 10, cy - 6), key, fill=(0, 0, 200, 255))
+    for key, x, ry, rot, y in bg.X:
+        cx, cy = px(x, ry)
+        col = (255, 120, 0, 255) if y >= bg.ROOF_Y else (0, 120, 0, 255)
+        d.rectangle([cx - 6, cy - 6, cx + 6, cy + 6], outline=col, fill=(255, 255, 255, 180), width=2)
+        d.text((cx + 8, cy - 6), key, fill=col)
     if not plan_png:
         for name, cells in bg.ROOMS.items():
             cx = sum(c for c, r in cells) / len(cells) + 0.5
